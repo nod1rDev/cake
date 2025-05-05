@@ -1,0 +1,85 @@
+.admin-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0 auto;
+}
+
+.container_add {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #FFD4DD;
+    flex-grow: 1;
+    padding: 100px 0;
+}
+
+.container_add h1 {
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 36.57px;
+    color: #9C0746;
+    margin-bottom: 45px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 40%;
+    background: white;
+    align-items: center;
+    padding: 68px 0 82px;
+    border-radius: 10px;
+    box-shadow: 0px 10px 50px 0px #00000033;
+    position: relative;
+    z-index: 10;
+}
+
+.macarons {
+    position: absolute;
+    z-index: -2;
+    right: -250px;
+    top: 60px;
+}
+
+.container_add input,
+.container_add textarea {
+    width: 343px;
+    height: 60px;
+    border: 1px solid #9C0746;
+    padding: 15px 25px;
+    border-radius: 40px;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 22.61px;
+    margin-bottom: 25px;
+    outline: none;
+    transition: .3s;
+}
+
+.container_add textarea {
+    height: 150px;
+    border-radius: 20px;
+    resize: none;
+}
+
+.container_add button {
+    background: linear-gradient(85.61deg, #9C0746 -15.57%, #B44E79 128.11%);
+    padding: 20px 121px;
+    box-shadow: 0px 20px 40px 0px #42021D4F;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 18.94px;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 50px;
+}
+
+.container_add button:hover{
+    background: #9c0745;
+}
+
+.container_add input:focus,
+.container_add textarea:focus {
+    box-shadow: 0 0 10px #9c07458c;
+}

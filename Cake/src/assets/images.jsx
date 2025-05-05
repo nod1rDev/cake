@@ -1,6 +1,0 @@
-export {default as logo} from './Mask group.svg'
-export {default as menu} from './Menu.svg'
-export {default as profile} from './User_Empty.svg'
-export {default as new_icon} from './Frame 205.svg'
-export {default as cake} from './Пирожное Воздушное 39 гр.svg'
-export {default as cart} from './Shopping_Cart.svg'
