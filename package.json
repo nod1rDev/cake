@@ -8,16 +8,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/erkinovazarina/repo.git"
+    "url": "git+https://github.com/zarinaerkinova/cake.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "bugs": {
-    "url": "https://github.com/username/repo/issues"
+    "url": "https://github.com/zarinaerkinova/cake/issues"
   },
-  "homepage": "https://github.com/username/repo#readme",
+  "homepage": "https://github.com/zarinaerkinova/cake/blob/main/README.md",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
