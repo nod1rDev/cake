@@ -5,10 +5,13 @@ import { FaRegUser } from "react-icons/fa";
 import { FaBars } from "react-icons/fa6";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import logo from '/Zarinka_logo.svg'
+import { useUserStore } from '../store/User';
 
 const Navbar = () => {
+    const { user, token } = useUserStore()
+
+    console.log(token, user);
     return (
         <>
             <Container>
@@ -28,10 +31,9 @@ const Navbar = () => {
                                 <NavLink to="#">Отзывы</NavLink>
                             </form>
                         </div>
-                        <Link to={'/register'}>register</Link>
-                        <Link className="profile-button" to={'/profile'}>
+                        <Link className="profile-button" to={token && user ? '/profile' : '/register'}>
                             <FaRegUser />
-                            Личный кабинет
+                            {token && user ? 'Профиль' : 'Войти'}
                         </Link>
                     </nav>
                 </Row>

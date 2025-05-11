@@ -43,7 +43,7 @@ const Catalog = () => {
                             <Card key={product._id} product={product} />
                         ))
                     ) : (
-                        <p>No products available</p>
+                        <p>Loading...</p>
                     )}
                 </div>
             </div>

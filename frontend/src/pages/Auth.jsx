@@ -3,6 +3,7 @@ import macarons from '../assets/macarons.png';
 import './Auth.css';
 import { useUserStore } from '../store/User';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Auth = () => {
     const [newUser, setNewUser] = useState({
@@ -32,7 +33,7 @@ const Auth = () => {
         if (success) {
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(userData));
-
+            console.log("User data:", userData);
             // Use role to determine redirect path
             if (userData.role === 'admin') {
                 navigate('/admin');
@@ -43,6 +44,26 @@ const Auth = () => {
             setErrorMessage(message || "An error occurred. Please try again.");
         }
     };
+
+
+    const { user } = useUserStore();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        if (user || token) {
+            // Optionally parse role from localStorage if needed
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+            const role = storedUser?.role;
+
+            // Redirect based on role
+            if (role === 'admin') {
+                navigate('/profile');
+            } else {
+                navigate('/profile');
+            }
+        }
+    }, [navigate, user]);
 
     return (
         <>
