@@ -46,24 +46,30 @@ const Auth = () => {
     };
 
 
-    const { user } = useUserStore();
+    const { user, token } = useUserStore();
+
+    // useEffect(() => {
+    //     const token = localStorage.getItem('token');
+
+    //     if (user || token) {
+    //         // Optionally parse role from localStorage if needed
+    //         const storedUser = JSON.parse(localStorage.getItem('user'));
+    //         const role = storedUser?.role;
+
+    //         // Redirect based on role
+    //         if (role === 'admin') {
+    //             navigate('/profile');
+    //         } else {
+    //             navigate('/profile');
+    //         }
+    //     }
+    // }, [navigate, user]);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-
-        if (user || token) {
-            // Optionally parse role from localStorage if needed
-            const storedUser = JSON.parse(localStorage.getItem('user'));
-            const role = storedUser?.role;
-
-            // Redirect based on role
-            if (role === 'admin') {
-                navigate('/profile');
-            } else {
-                navigate('/profile');
-            }
+        if (user && token) {
+            navigate('/profile'); // or wherever you want to redirect them
         }
-    }, [navigate, user]);
+    }, [user, token, navigate]);
 
     return (
         <>
