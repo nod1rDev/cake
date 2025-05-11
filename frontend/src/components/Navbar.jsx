@@ -7,11 +7,23 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import logo from '/Zarinka_logo.svg'
 import { useUserStore } from '../store/User';
+import { useEffect } from 'react';
 
 const Navbar = () => {
-    const { user, token } = useUserStore()
+    const { user, token, setUserData } = useUserStore();
 
-    console.log(token, user);
+    useEffect(() => {
+        // On mount, check if data is in localStorage and set it in Zustand if not present
+        const storedUser = localStorage.getItem('user');
+        const storedToken = localStorage.getItem('token');
+        if (storedUser && storedToken && !user && !token) {
+            setUserData({
+                user: JSON.parse(storedUser),
+                token: storedToken,
+            });
+        }
+    }, [user, token, setUserData]);
+
     return (
         <>
             <Container>

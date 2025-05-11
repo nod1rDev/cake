@@ -7,8 +7,15 @@ import Footer from './pages/Footer'
 import Admin from './pages/Admin'
 import Auth from './pages/Auth'
 import Profile from './pages/Profile'
+import { useEffect } from 'react'
+import { useUserStore } from './store/User'
 
 function App() {
+  useEffect(() => {
+    const user = useUserStore.getState().user;
+    const token = useUserStore.getState().token;
+    console.log('App loaded: user', user, 'token', token);
+  }, []);
 
   return (
     <>

@@ -1,27 +1,26 @@
-// src/components/Profile.jsx
+import { useNavigate } from 'react-router-dom';
+import { useUserStore } from '../store/User';
+import AdminProfile from './AdminProfile';
+import UserProfile from './UserProfile';
 import { useEffect } from 'react';
-import {useUserStore} from '../store/User';
 
 const Profile = () => {
-  const { userInfo, errorMessage, fetchProfile } = useUserStore();
 
-  useEffect(() => {
-    fetchProfile();
-  }, [fetchProfile]);
+    const { user } = useUserStore();
+    console.log(user?.role);
 
-  return (
-    <div>
-      <h2>Your Profile</h2>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      {userInfo ? (
-        <div>
-          <p>{userInfo.name}</p>
-        </div>
-      ) : (
-        !errorMessage && <p>Loading profile...</p>
-      )}
-    </div>
-  );
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (user?.role === 'admin') navigate('/profile');
+        else if (user?.role === 'user') navigate('/profile');
+    }, [user, navigate]);
+
+    return (
+        <>
+            {user?.role === 'admin' && <AdminProfile />}
+            {user?.role === 'user' && <UserProfile />}
+        </>
+    );
 };
 
 export default Profile;
