@@ -1,19 +1,21 @@
-import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
+import jwt from 'jsonwebtoken';
 
-dotenv.config()
+const auth = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
 
-const auth = (req, res) => {
-    const token = req.header('x-auth-token')
-    if (!token) return res.status(401).json({ msg: 'no token, authorization denied' })
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ msg: 'No token, authorization denied' });
+  }
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        req.user = decoded.userId
-        next()
-    } catch (error) {
-        res.status(401).json({msg: 'Token is not valid'})
-    }
-}
+  const token = authHeader.split(' ')[1];
 
-export default auth
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = { id: decoded.userId }; // Attach user ID to request
+    next();
+  } catch (err) {
+    res.status(401).json({ msg: 'Token is not valid' });
+  }
+};
+
+export default auth;
