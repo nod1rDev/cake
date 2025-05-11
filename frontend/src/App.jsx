@@ -9,6 +9,7 @@ import Auth from './pages/Auth'
 import Profile from './pages/Profile'
 import { useEffect } from 'react'
 import { useUserStore } from './store/User'
+import Bakers from './pages/Bakers'
 
 function App() {
   useEffect(() => {
@@ -26,6 +27,7 @@ function App() {
         <Route path='/admin' element={<Admin />} />
         <Route path='/register' element={<Auth />} />
         <Route path='/profile' element={<Profile />} />
+        <Route path='/bakers' element={<Bakers />} />
       </Routes>
       <Footer />
     </>

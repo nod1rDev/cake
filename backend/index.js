@@ -9,8 +9,9 @@ dotenv.config()
 
 const app = express()
 app.use(cors({
-  origin: 'http://localhost:5000', // or whatever your frontend URL is
-  credentials: true
+    origin: 'http://localhost:5000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
 }));
 app.use(express.json())
 

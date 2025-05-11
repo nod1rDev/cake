@@ -12,6 +12,20 @@ export const user = async (req, res) => {
     }
 }
 
+export const bakers = async (req, res) => {
+    try {
+        const bakers = await User.find({ role: 'admin' }).select('-password');
+        if (bakers.length === 0) {
+            return res.status(404).json({ msg: 'No bakers found' });
+        }
+        res.json(bakers);
+    } catch (error) {
+        console.error('Error fetching bakers:', error);
+        return res.status(500).json({ success: false, msg: 'Server error' });
+    }
+};
+
+
 export const register = async (req, res) => {
     const { name, email, password, role } = req.body
     try {

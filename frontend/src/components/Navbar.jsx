@@ -36,11 +36,11 @@ const Navbar = () => {
                                 Каталог
                             </button>
                             <form className="menu-header">
-                                <NavLink to="#">Оптовые продажи</NavLink>
+                                <NavLink to="/bakers">Кондитеры</NavLink>
                                 <NavLink to="#">Продажи в рознице</NavLink>
                                 <NavLink to="#">Контакты</NavLink>
-                                <NavLink to="#">Вакансии</NavLink>
                                 <NavLink to="#">Отзывы</NavLink>
+                                <NavLink to="#">Вакансии</NavLink>
                             </form>
                         </div>
                         <Link className="profile-button" to={token && user ? '/profile' : '/register'}>
