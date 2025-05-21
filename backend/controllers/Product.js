@@ -17,7 +17,7 @@ export const getBakerProducts = async (req, res) => {
 
         const products = await Product.find({ createdBy: bakerId });
 
-        res.json(products);
+        res.status(200).json({ success: true, data: products })
     } catch (error) {
         res.status(500).json({ msg: 'Server error' });
     }
@@ -44,25 +44,22 @@ export const createProduct = async (req, res) => {
     try {
         const user = req.user;
 
-        // Only allow admins to create products
         if (!user || user.role !== 'admin') {
             return res.status(403).json({ msg: 'Only admins can add products' });
         }
 
         const { name, price, image, description } = req.body;
 
-        // Check if all required fields are provided
         if (!name || !price || !image || !description) {
             return res.status(400).json({ msg: 'Please provide all product fields' });
         }
 
-        // Create the product, including the admin's userId in createdBy
         const product = await Product.create({
             name,
             price,
             image,
             description,
-            createdBy: user._id,  // Store the admin's userId
+            createdBy: user._id,
         });
 
         res.status(201).json(product);

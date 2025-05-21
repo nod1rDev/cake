@@ -8,76 +8,76 @@ export const useUserStore = create(
       token: null,
       userInfo: null,
       errorMessage: '',
-      hydrated: false, // ✅ hydration status
+      loading: false,
+      hydrated: false,
+
+      setHydrated: (value) => set({ hydrated: value }),
 
       createUser: async (userData) => {
+        set({ loading: true, errorMessage: '' });
         try {
-          const response = await fetch('/api/register', {
+          const res = await fetch('/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userData),
           });
-          const data = await response.json();
+          const data = await res.json();
 
-          if (response.ok) {
-            set({ user: data.userData, token: data.token });
-            return { success: true, token: data.token, userData: data.userData };
-          } else {
-            return { success: false, message: data.message || 'Registration failed' };
+          if (!res.ok) {
+            set({ errorMessage: data.message || 'Registration failed', loading: false });
+            return { success: false };
           }
-        } catch (error) {
-          return { success: false, message: error.message || 'Network error' };
+
+          set({ user: data.userData, token: data.token, loading: false });
+          return { success: true, token: data.token, userData: data.userData };
+        } catch (err) {
+          set({ errorMessage: err.message || 'Network error', loading: false });
+          return { success: false };
         }
       },
 
       loginUser: async (credentials) => {
+        set({ loading: true, errorMessage: '' });
         try {
-          const response = await fetch('/api/login', {
+          const res = await fetch('/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(credentials),
           });
-          const data = await response.json();
+          const data = await res.json();
 
-          if (response.ok && data.userData) {
-            set({ user: data.userData, token: data.token });
-            return { success: true };
-          } else {
-            return { success: false, message: data.message || 'Login failed' };
+          if (!res.ok || !data.userData) {
+            set({ errorMessage: data.message || 'Login failed', loading: false });
+            return { success: false };
           }
-        } catch (error) {
-          return { success: false, message: error.message };
+
+          set({ user: data.userData, token: data.token, loading: false });
+          return { success: true };
+        } catch (err) {
+          set({ errorMessage: err.message || 'Network error', loading: false });
+          return { success: false };
         }
       },
 
-      logoutUser: () => {
-        set({ user: null, token: null, userInfo: null, errorMessage: '' });
-      },
+      logoutUser: () => set({ user: null, token: null, userInfo: null, errorMessage: '' }),
 
       fetchProfile: async () => {
         const token = get().token;
-
         if (!token) {
           set({ errorMessage: 'No token found. Please login.' });
           return;
         }
+        set({ loading: true, errorMessage: '' });
 
         try {
-          const response = await fetch('/api/profile', {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+          const res = await fetch('/api/profile', {
+            headers: { Authorization: `Bearer ${token}` },
           });
-
-          if (!response.ok) {
-            throw new Error('Failed to fetch profile data');
-          }
-
-          const data = await response.json();
-          set({ userInfo: data, errorMessage: '' });
-        } catch (error) {
-          set({ errorMessage: error.message });
+          if (!res.ok) throw new Error('Failed to fetch profile data');
+          const data = await res.json();
+          set({ userInfo: data, loading: false });
+        } catch (err) {
+          set({ errorMessage: err.message, loading: false });
         }
       },
 
@@ -87,7 +87,7 @@ export const useUserStore = create(
       name: 'user-store',
       partialize: (state) => ({ user: state.user, token: state.token }),
       onRehydrateStorage: () => (state) => {
-        state?.setState({ hydrated: true });
+        if (state) state.setHydrated(true);
       },
     }
   )

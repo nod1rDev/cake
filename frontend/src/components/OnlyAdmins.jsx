@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { useUserStore } from '../store/User';
 
 const OnlyAdmins = ({ children }) => {
-  const { user } = useUserStore();
+  const user = useUserStore(state => state.user);
 
   if (!user) {
     return <Navigate to="/register" />;
