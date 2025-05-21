@@ -11,22 +11,66 @@ export const getProducts = async (req, res) => {
     }
 }
 
-export const createProduct = async (req, res) => {
-    const product = req.body;
-
-    if (!product.name || !product.price || !product.image) {
-        return res.status(400).json({ success: false, message: "Please provide all fields" })
-    }
-
-    const newPRoduct = new Product(product)
-
+export const getBakerProducts = async (req, res) => {
     try {
-        await newPRoduct.save()
-        res.status(201).json({ success: true, data: newPRoduct })
+        const bakerId = req.params.bakerId;
+
+        const products = await Product.find({ createdBy: bakerId });
+
+        res.json(products);
     } catch (error) {
-        res.status(500).json({ success: false, message: "server Error" })
+        res.status(500).json({ msg: 'Server error' });
     }
-}
+};
+
+// export const createProduct = async (req, res) => {
+//     const product = req.body;
+
+//     if (!product.name || !product.price || !product.image) {
+//         return res.status(400).json({ success: false, message: "Please provide all fields" })
+//     }
+
+//     const newPRoduct = new Product(product)
+
+//     try {
+//         await newPRoduct.save()
+//         res.status(201).json({ success: true, data: newPRoduct })
+//     } catch (error) {
+//         res.status(500).json({ success: false, message: "server Error" })
+//     }
+// }
+
+export const createProduct = async (req, res) => {
+    try {
+        const user = req.user;
+
+        // Only allow admins to create products
+        if (!user || user.role !== 'admin') {
+            return res.status(403).json({ msg: 'Only admins can add products' });
+        }
+
+        const { name, price, image, description } = req.body;
+
+        // Check if all required fields are provided
+        if (!name || !price || !image || !description) {
+            return res.status(400).json({ msg: 'Please provide all product fields' });
+        }
+
+        // Create the product, including the admin's userId in createdBy
+        const product = await Product.create({
+            name,
+            price,
+            image,
+            description,
+            createdBy: user._id,  // Store the admin's userId
+        });
+
+        res.status(201).json(product);
+    } catch (error) {
+        console.error('Create product error:', error);
+        res.status(500).json({ msg: 'Server error' });
+    }
+};
 
 export const updateProduct = async (req, res) => {
     const { id } = req.params;

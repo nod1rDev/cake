@@ -10,6 +10,8 @@ import Profile from './pages/Profile'
 import { useEffect } from 'react'
 import { useUserStore } from './store/User'
 import Bakers from './pages/Bakers'
+import OnlyAdmins from './components/OnlyAdmins'
+import OnlyAuthorized from './pages/OnlyAuthorized'
 
 function App() {
   useEffect(() => {
@@ -24,9 +26,23 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/catalog' element={<Catalog />} />
-        <Route path='/admin' element={<Admin />} />
+        <Route
+          path="/admin"
+          element={
+            <OnlyAdmins>
+              <Admin />
+            </OnlyAdmins>
+          }
+        />
         <Route path='/register' element={<Auth />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route
+          path="/profile"
+          element={
+            <OnlyAuthorized>
+              <Profile />
+            </OnlyAuthorized>
+          }
+        />
         <Route path='/bakers' element={<Bakers />} />
       </Routes>
       <Footer />

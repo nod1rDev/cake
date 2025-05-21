@@ -128,6 +128,19 @@ const Auth = () => {
                     </div>
                 </div>
             </main>
+
+            {/* <section class="logIn">
+                <h2>Авторизация</h2>
+                <form>
+
+                    <input class="email" placeholder="Ваша почта" type="text" required />
+                    <input class="password" placeholder="Пароль" type="text" required />
+
+                    <button class="next">Продолжить</button>
+                </form>
+                <a class="registerLink" href="#">Нет аккаунта? Зарегистрируйтесь </a>
+
+            </section> */}
         </>
     );
 };

@@ -8,6 +8,7 @@ export const useUserStore = create(
       token: null,
       userInfo: null,
       errorMessage: '',
+      hydrated: false, // ✅ hydration status
 
       createUser: async (userData) => {
         try {
@@ -17,10 +18,9 @@ export const useUserStore = create(
             body: JSON.stringify(userData),
           });
           const data = await response.json();
+
           if (response.ok) {
             set({ user: data.userData, token: data.token });
-            localStorage.setItem('user', JSON.stringify(data.userData));
-            localStorage.setItem('token', data.token);
             return { success: true, token: data.token, userData: data.userData };
           } else {
             return { success: false, message: data.message || 'Registration failed' };
@@ -38,10 +38,9 @@ export const useUserStore = create(
             body: JSON.stringify(credentials),
           });
           const data = await response.json();
+
           if (response.ok && data.userData) {
             set({ user: data.userData, token: data.token });
-            localStorage.setItem('user', JSON.stringify(data.userData));
-            localStorage.setItem('token', data.token);
             return { success: true };
           } else {
             return { success: false, message: data.message || 'Login failed' };
@@ -52,13 +51,12 @@ export const useUserStore = create(
       },
 
       logoutUser: () => {
-        set({ user: null, token: null, userInfo: null, errorMessage: '', isLoadingProfile: false });
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
+        set({ user: null, token: null, userInfo: null, errorMessage: '' });
       },
 
       fetchProfile: async () => {
-        const token = get().token; // ✅ use get() from Zustand, not localStorage
+        const token = get().token;
+
         if (!token) {
           set({ errorMessage: 'No token found. Please login.' });
           return;
@@ -68,7 +66,7 @@ export const useUserStore = create(
           const response = await fetch('/api/profile', {
             method: 'GET',
             headers: {
-              'Authorization': `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
           });
 
@@ -83,13 +81,14 @@ export const useUserStore = create(
         }
       },
 
-
-      // This is to allow setting the user and token from localStorage on initial render
       setUserData: ({ user, token }) => set({ user, token }),
     }),
     {
-      name: 'user-store', // localStorage key
-      partialize: (state) => ({ user: state.user, token: state.token }), // persist only user and token
+      name: 'user-store',
+      partialize: (state) => ({ user: state.user, token: state.token }),
+      onRehydrateStorage: () => (state) => {
+        state?.setState({ hydrated: true });
+      },
     }
   )
 );

@@ -1,7 +1,7 @@
 // middleware/onlyAdmins.js
 const onlyAdmins = (req, res, next) => {
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ msg: 'Access denied: admins only' });
+  if (!req.user || req.user.role !== 'admin') {
+    return res.status(403).json({ msg: 'Access denied: only admins can add products' });
   }
   next();
 };

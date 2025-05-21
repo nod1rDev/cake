@@ -1,6 +1,8 @@
 import User from '../models/User.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import Product from "../models/Product.js";
+
 
 export const user = async (req, res) => {
     try {
@@ -24,6 +26,16 @@ export const bakers = async (req, res) => {
         return res.status(500).json({ success: false, msg: 'Server error' });
     }
 };
+
+export const baker = async (req, res) => {
+    const { bakerId } = req.params;
+    try {
+        const products = await Product.find({ baker: bakerId }); // assuming "baker" field stores user ID
+        res.json(products);
+    } catch (err) {
+        res.status(500).json({ message: 'Failed to fetch products' });
+    }
+}
 
 
 export const register = async (req, res) => {

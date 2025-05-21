@@ -16,7 +16,11 @@ const productScheme = new mongoose.Schema({
     desc: {
         type: String,
         required: true
-    }
+    },
+    createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // references the baker (user)
+  },
 }, {
     timestamps: true
 });
