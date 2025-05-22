@@ -13,6 +13,7 @@ export const useUserStore = create(
 
       setHydrated: (value) => set({ hydrated: value }),
 
+<<<<<<< HEAD
       createUser: async (formData) => {
         set({ loading: true, errorMessage: '' });
 
@@ -32,17 +33,39 @@ export const useUserStore = create(
           if (!res.ok || !data.userData || !data.token) {
             set({ errorMessage: data.message || data.msg || 'Registration failed', loading: false });
             return { success: false, message: data.message || data.msg };
+=======
+      createUser: async (userData) => {
+        set({ loading: true, errorMessage: '' });
+        try {
+          const res = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData),
+          });
+          const data = await res.json();
+
+          if (!res.ok) {
+            set({ errorMessage: data.message || 'Registration failed', loading: false });
+            return { success: false };
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
           }
 
           set({ user: data.userData, token: data.token, loading: false });
           return { success: true, token: data.token, userData: data.userData };
         } catch (err) {
           set({ errorMessage: err.message || 'Network error', loading: false });
+<<<<<<< HEAD
           return { success: false, message: err.message };
         }
       },
 
 
+=======
+          return { success: false };
+        }
+      },
+
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
       loginUser: async (credentials) => {
         set({ loading: true, errorMessage: '' });
         try {
@@ -51,6 +74,7 @@ export const useUserStore = create(
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(credentials),
           });
+<<<<<<< HEAD
           let data;
           try {
             data = await res.json();
@@ -75,6 +99,24 @@ export const useUserStore = create(
         localStorage.clear();
         set({ user: null, token: null });
       },
+=======
+          const data = await res.json();
+
+          if (!res.ok || !data.userData) {
+            set({ errorMessage: data.message || 'Login failed', loading: false });
+            return { success: false };
+          }
+
+          set({ user: data.userData, token: data.token, loading: false });
+          return { success: true };
+        } catch (err) {
+          set({ errorMessage: err.message || 'Network error', loading: false });
+          return { success: false };
+        }
+      },
+
+      logoutUser: () => set({ user: null, token: null, userInfo: null, errorMessage: '' }),
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
 
       fetchProfile: async () => {
         const token = get().token;
@@ -88,6 +130,7 @@ export const useUserStore = create(
           const res = await fetch('/api/profile', {
             headers: { Authorization: `Bearer ${token}` },
           });
+<<<<<<< HEAD
           let data;
           try {
             data = await res.json();
@@ -95,6 +138,10 @@ export const useUserStore = create(
             data = {};
           }
           if (!res.ok) throw new Error(data.message || data.msg || 'Failed to fetch profile data');
+=======
+          if (!res.ok) throw new Error('Failed to fetch profile data');
+          const data = await res.json();
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
           set({ userInfo: data, loading: false });
         } catch (err) {
           set({ errorMessage: err.message, loading: false });
@@ -111,4 +158,8 @@ export const useUserStore = create(
       },
     }
   )
+<<<<<<< HEAD
 );
+=======
+);
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213

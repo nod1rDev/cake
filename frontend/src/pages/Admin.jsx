@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
+=======
+import React, { useEffect, useState } from 'react';
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
 import './Admin.css';
 import { useProductStore } from '../store/Product';
 import { useUserStore } from '../store/User';
 import macarons from '../assets/macarons.png';
+<<<<<<< HEAD
+=======
+import { shallow } from 'zustand/shallow';
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
 
 const Admin = () => {
   const [newProduct, setNewProduct] = useState({
@@ -14,6 +22,7 @@ const Admin = () => {
 
   const [message, setMessage] = useState({ error: '', success: '' });
 
+<<<<<<< HEAD
   const createProduct = useProductStore(state => state.createProduct);
   const loading = useProductStore(state => state.loading);
   const error = useProductStore(state => state.error);
@@ -56,6 +65,75 @@ const Admin = () => {
       setMessage({ error: 'Произошла ошибка, попробуйте еще раз.', success: '' });
     }
   };
+=======
+  const { createProduct, loading, error } = useProductStore((state) => ({
+    createProduct: state.createProduct,
+    loading: state.loading,
+    error: state.error,
+  }), shallow);
+
+  const { user, token } = useUserStore((state) => ({
+    user: state.user,
+    token: state.token,
+  }), shallow);
+
+  useEffect(() => {
+    console.log("createProduct changed:", createProduct);
+  }, [createProduct]); // This will only log when createProduct reference changes
+
+  useEffect(() => {
+    console.log("User or Token changed:", user, token);
+  }, [user, token]); // This will only log when user or token values change
+
+  const addProduct = async () => {
+    setMessage({ error: '', success: '' });
+
+    if (!user || !token) {
+      setMessage({ error: 'Пользователь не аутентифицирован.', success: '' });
+      return;
+    }
+
+    const { name, price, image, description } = newProduct;
+
+    if (!name || !price || !image || !description) {
+      setMessage({ error: 'Пожалуйста, заполните все поля.', success: '' });
+      return;
+    }
+
+    const numericPrice = Number(price);
+    if (isNaN(numericPrice) || numericPrice <= 0) {
+      setMessage({ error: 'Цена должна быть действительным числом больше 0.', success: '' });
+      return;
+    }
+
+    const result = await createProduct(
+      {
+        name,
+        price: numericPrice,
+        image,
+        description,
+      },
+      token
+    );
+
+    if (result.success) {
+      setMessage({ success: 'Продукт успешно добавлен!', error: '' });
+      setNewProduct({ name: '', price: '', image: '', description: '' });
+    } else {
+      setMessage({ error: result.message || 'Не удалось добавить продукт.', success: '' });
+    }
+  };
+
+  console.log('Admin component rendering. Current state:', {
+    newProduct,
+    message,
+    loading,
+    error,
+    user,
+    token,
+  });
+
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
   return (
     <main className="admin-main">
       <div className="container_add">
@@ -81,9 +159,16 @@ const Admin = () => {
             onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
           />
           <input
+<<<<<<< HEAD
             type="file"
             accept="image/*"
             onChange={(e) => setNewProduct({ ...newProduct, image: e.target.files[0] })}
+=======
+            type="text"
+            placeholder="Изображение"
+            value={newProduct.image}
+            onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
           />
           <textarea
             placeholder="Описание продукта"

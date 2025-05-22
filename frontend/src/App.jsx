@@ -12,8 +12,11 @@ import { useUserStore } from './store/User'
 import Bakers from './pages/Bakers'
 import OnlyAdmins from './components/OnlyAdmins'
 import OnlyAuthorized from './pages/OnlyAuthorized'
+<<<<<<< HEAD
 import BakerDetail from './pages/BakerDetail'
 import OnlyUsers from './components/OnlyUsers'
+=======
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
 
 function App() {
   useEffect(() => {
@@ -27,6 +30,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
+<<<<<<< HEAD
 
           <Route path='/catalog' element={
             <OnlyUsers>
@@ -45,6 +49,9 @@ function App() {
           } />
 
 
+=======
+        <Route path='/catalog' element={<Catalog />} />
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
         <Route
           path="/admin"
           element={
@@ -53,7 +60,10 @@ function App() {
             </OnlyAdmins>
           }
         />
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
         <Route path='/register' element={<Auth />} />
         <Route
           path="/profile"
@@ -63,6 +73,10 @@ function App() {
             </OnlyAuthorized>
           }
         />
+<<<<<<< HEAD
+=======
+        <Route path='/bakers' element={<Bakers />} />
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
       </Routes>
       <Footer />
     </>

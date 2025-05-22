@@ -1,7 +1,12 @@
+<<<<<<< HEAD
+=======
+// Inside your store (useBakerStore.js)
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
 import { create } from 'zustand';
 
 export const useBakerStore = create((set) => ({
     bakers: [],
+<<<<<<< HEAD
     selectedBaker: null,
     error: '',
     loading: false,
@@ -31,4 +36,20 @@ export const useBakerStore = create((set) => ({
     },
 
     clearSelectedBaker: () => set({ selectedBaker: null, error: '' }),
+=======
+    error: '',
+
+    fetchBaker: async () => {
+        try {
+            const response = await fetch('/api/bakers');
+            if (!response.ok) {
+                throw new Error('Failed to fetch bakers');
+            }
+            const data = await response.json();
+            set({ bakers: data, error: '' });
+        } catch (err) {
+            set({ error: err.message });
+        }
+    }
+>>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
 }));
