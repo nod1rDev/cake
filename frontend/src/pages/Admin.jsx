@@ -3,6 +3,7 @@ import './Admin.css';
 import { useProductStore } from '../store/Product';
 import { useUserStore } from '../store/User';
 import macarons from '../assets/macarons.png';
+import { shallow } from 'zustand/shallow';
 
 const Admin = () => {
   const [newProduct, setNewProduct] = useState({
@@ -18,12 +19,12 @@ const Admin = () => {
     createProduct: state.createProduct,
     loading: state.loading,
     error: state.error,
-  }));
+  }), shallow);
 
   const { user, token } = useUserStore((state) => ({
     user: state.user,
     token: state.token,
-  }));
+  }), shallow);
 
   useEffect(() => {
     console.log("createProduct changed:", createProduct);
@@ -71,6 +72,15 @@ const Admin = () => {
       setMessage({ error: result.message || 'Не удалось добавить продукт.', success: '' });
     }
   };
+
+  console.log('Admin component rendering. Current state:', {
+    newProduct,
+    message,
+    loading,
+    error,
+    user,
+    token,
+  });
 
   return (
     <main className="admin-main">
