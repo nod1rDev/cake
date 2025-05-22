@@ -1,0 +1,86 @@
+.cake-options {
+    height: 345px;
+    position: relative;
+    padding: 0 0px 16.5px;
+    background-color: #fde5ea4d;
+    border: 1px solid #FFD4DD;
+    border-radius: 14px;
+    overflow: hidden;
+    width: 238px;
+    padding-bottom: 10px;
+}
+
+.cake-options .cake{
+    width: 100%;
+    height: 65%;
+}
+
+.name-price {
+    width: 85%;
+    margin: 0 auto;
+}
+
+.gr-call p {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: rgba(168, 180, 197, 1);
+}
+
+.name-price h3{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17.5px;
+    color: #9C0746;
+    margin-bottom: 4px;
+}
+
+hr {
+    margin: 15px !important;
+    width: 85%;
+    margin: 0 auto;
+    border: none;
+    height: 1px;
+    background-color: #FFD4DD;
+}
+
+.desc {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    margin-top: 10.51px;
+    color: rgba(168, 180, 197, 1);
+}
+
+.new {
+    position: absolute;
+    left: 14px;
+    top: 0px;
+}
+
+.cart {
+    position: absolute;
+    font-family: Inter;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17.5px;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 44px;
+    border: none;
+    background-color: #9C0746;
+    justify-content: center;
+    column-gap: 11px;
+    bottom: -44px;
+    transition: .3s;
+}
+
+.icon{
+    font-weight: 200;
+}
+
+.cake-options:hover .cart{
+    bottom: 0;
+}

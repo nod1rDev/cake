@@ -1,0 +1,67 @@
+.mainNav {
+    background-color: white;
+    padding: 0 120px;
+    max-width: 100%;
+    margin: 0 auto;
+    height: 90px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mainNav div {
+    display: flex;
+    align-items: center;
+    gap: 33px;
+}
+
+.menu-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.menu-header a {
+    color: rgba(61, 66, 73, 1);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17.5px;
+    letter-spacing: 0%;
+}
+
+.menu-header a:hover {
+    color: #9C0746;
+}
+
+
+.catalogue-button {
+    margin-left: 5px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17.5px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 16px;
+    border-radius: 45px;
+    border: none;
+    background-color: #9C0746;
+    color: white;
+}
+
+.profile-button {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    gap: 11px;
+    border: 1px solid rgba(219, 225, 237, 1);
+    border-radius: 45px;
+    background-color: transparent;
+    transition: .3s;
+    color: rgba(61, 66, 73, 1);
+}
+
+.profile-button:hover {
+    border-color: #9C0746;
+    box-shadow: 0 0 10px #9c07458c;
+}
