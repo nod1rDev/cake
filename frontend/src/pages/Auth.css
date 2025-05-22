@@ -64,7 +64,7 @@
     transition: .3s;
 }
 
-.container_add button {
+.container_add .submit {
     background: linear-gradient(85.61deg, #9C0746 -15.57%, #B44E79 128.11%);
     padding: 20px 121px;
     box-shadow: 0px 20px 40px 0px #42021D4F;
@@ -76,7 +76,7 @@
     border-radius: 50px;
 }
 
-.container_add button:hover{
+.container_add .submit:hover{
     background: #9c0745;
 }
 
@@ -84,4 +84,15 @@
     box-shadow: 0 0 10px #9c07458c;
 }
 
+.admin-main .switch{
+    margin-top: 40px;
+    background: transparent;
+    color: #9c0745;
+    text-decoration: underline;
+    box-shadow: none;
+    padding: unset;
+}
 
+.admin-main .switch:hover{
+    background-color: transparent;
+}

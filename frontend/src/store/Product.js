@@ -56,21 +56,18 @@ export const useProductStore = create((set) => ({
     },
 
     fetchProductsByBaker: async (bakerId) => {
-        if (!bakerId) {
-            set({ error: 'Missing baker ID' });
-            return { success: false, message: 'Missing baker ID' };
-        }
         set({ loading: true, error: '' });
         try {
             const res = await fetch(`/api/products/bakers/${bakerId}`);
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.message || 'Failed to fetch products');
+            }
             const response = await res.json();
-            if (!res.ok) throw new Error(response.message || 'Error fetching');
-
-            set({ products: response.data, loading: false });
-            return { success: true };
+            set({ products: response.data, loading: false });  // Use response.data here
         } catch (err) {
+            console.error('Error fetching products:', err);
             set({ loading: false, error: err.message });
-            return { success: false, message: err.message };
         }
     },
 }));

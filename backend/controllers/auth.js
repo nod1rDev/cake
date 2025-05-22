@@ -37,24 +37,52 @@ export const baker = async (req, res) => {
     }
 }
 
+export const getBakerById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const baker = await User.findById(id).select('-password');
+        if (!baker) return res.status(404).json({ message: 'Baker not found' });
+        res.json(baker);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
 
 export const register = async (req, res) => {
-    const { name, email, password, role } = req.body
+    const { name, email, password, role, bio, phone } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : '/uploads/default.png';
+
     try {
-        let user = await User.findOne({ email })
-        if (user) return res.status(400).json({ msg: "User already exists" })
+        let user = await User.findOne({ email });
+        if (user) return res.status(400).json({ msg: "User already exists" });
 
-        user = new User({ name, email, password, role })
-        await user.save()
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
-        const payload = { userId: user.id }
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
+        user = new User({ name, email, password: hashedPassword, role, image, bio, phone });
+        await user.save();
 
-        res.json({ success: true, token })
+        const payload = { userId: user.id };
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        const userData = {
+            name: user.name,
+            email: user.email,
+            role: user.role || 'user',
+            bio: user.bio,
+            phone: user.phone,
+            image: user.image,
+            _id: user._id,
+        };
+
+        res.json({ success: true, token, userData });
     } catch (error) {
+        console.error('Register error:', error);
         return res.status(500).json({ success: false, msg: 'Server error' });
     }
-}
+};
+
 
 // export const login = async (req, res) => {
 //     const { email, password } = req.body

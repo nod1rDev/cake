@@ -28,19 +28,17 @@ export const getBakerProducts = async (req, res) => {
 };
 
 export const createProduct = async (req, res) => {
-    console.log('Create product route called');
-    console.log('Received file:', req.file);
-
     try {
-        const user = req.user;
-        console.log('User:', user);
+        console.log('User in createProduct:', req.user);
+        console.log('Request body:', req.body);
+        console.log('Uploaded file:', req.file);
 
+        const user = req.user;
         if (!user || user.role !== 'admin') {
             return res.status(403).json({ success: false, message: 'Only admins can add products' });
         }
 
         const { name, price, description } = req.body;
-        console.log('Product data:', { name, price, description });
 
         if (!name || !price || !description) {
             return res.status(400).json({ success: false, message: 'Please provide all product fields' });
@@ -50,24 +48,24 @@ export const createProduct = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Product image is required' });
         }
 
-        const imagePath = `/uploads/${req.file.filename}`;
+        // const imagePath = `/uploads/${req.file.filename}`;
 
         const product = await Product.create({
             name,
             price,
-            image: imagePath,
+            image: `/uploads/${req.file.filename}`,
             description,
             createdBy: user._id,
         });
 
-        console.log('Product created:', product);
-
+        console.log('Product created successfully:', product);
         res.status(201).json({ success: true, product });
     } catch (error) {
         console.error('Create product error:', error);
         res.status(500).json({ success: false, message: 'Server error' });
     }
 };
+
 
 export const updateProduct = async (req, res) => {
     const { id } = req.params;

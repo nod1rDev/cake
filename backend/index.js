@@ -4,20 +4,26 @@ import { connectDB } from './config/db.js';
 import productRoutes from './routes/Product.js';
 import authRoutes from './routes/auth.js';
 import cors from 'cors';
-import { fileURLToPath } from 'url';
 import path from 'path';
+import fs from 'fs';
 
 dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const app = express();
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+const uploadDir = path.join(process.cwd(), 'uploads');
+
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+    console.log('Uploads folder created at:', uploadDir);
+} else {
+    console.log('Uploads folder already exists at:', uploadDir);
+}
+
+app.use('/uploads', express.static(uploadDir));
 
 app.use(cors({
-    origin: 'http://localhost:5173', // Make sure this matches your frontend origin
+    origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }));
@@ -28,8 +34,8 @@ app.use('/api/products', productRoutes);
 app.use('/api/', authRoutes);
 
 app.use((err, req, res, next) => {
-  console.error('Unhandled Error:', err);
-  res.status(500).json({ success: false, msg: 'Internal server error' });
+    console.error('Unhandled Error:', err);
+    res.status(500).json({ success: false, msg: 'Internal server error' });
 });
 
 const PORT = process.env.PORT || 5000;

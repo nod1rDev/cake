@@ -1,14 +1,18 @@
-import express from 'express'
-import { getProducts, createProduct, updateProduct, deleteProduct, getBakerProducts } from '../controllers/Product.js'
-import onlyAdmins from '../middleware/onlyAdmins.js'
-import { auth } from '../middleware/auth.js'
+import express from 'express';
 import multer from 'multer';
+import path from 'path';
+import { getProducts, createProduct, updateProduct, deleteProduct, getBakerProducts } from '../controllers/Product.js';
+import { auth } from '../middleware/auth.js';
+import onlyAdmins from '../middleware/onlyAdmins.js';
 
-const router = express.Router()
+const router = express.Router();
+
+// Use the same uploads path as in index.js
+const uploadDir = path.join(process.cwd(), 'uploads');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/');
+        cb(null, uploadDir);  // absolute path to uploads folder
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname);
@@ -17,9 +21,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-
-router.get('/', getProducts)
+router.get('/', getProducts);
 router.get('/bakers/:bakerId', getBakerProducts);
+
 router.post(
     '/',
     auth,
@@ -33,7 +37,8 @@ router.post(
     },
     createProduct
 );
-router.put('/:id', auth, onlyAdmins, updateProduct)
-router.delete('/:id', auth, onlyAdmins, deleteProduct)
 
-export default router
+router.put('/:id', auth, onlyAdmins, updateProduct);
+router.delete('/:id', auth, onlyAdmins, deleteProduct);
+
+export default router;

@@ -4,14 +4,19 @@ import './Auth.css';
 import { useUserStore } from '../store/User';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
 const Auth = () => {
     const [newUser, setNewUser] = useState({
         name: "",
         email: "",
         password: "",
-        role: ""
+        role: "",
+        bio: "",
+        phone: ""
     });
+
+    const [imageFile, setImageFile] = useState(null);
     const [isLogin, setIsLogin] = useState(true); // State to toggle between login and registration
     const [errorMessage, setErrorMessage] = useState(""); // State for error messages
 
@@ -20,33 +25,52 @@ const Auth = () => {
 
     const handleUserAction = async () => {
         let response;
+
         if (isLogin) {
-            // Handle login
             response = await loginUser({ email: newUser.email, password: newUser.password });
         } else {
-            // Handle registration
-            response = await createUser(newUser);
+            const formData = new FormData();
+            Object.entries(newUser).forEach(([key, value]) => {
+                if (value !== undefined && value !== null && value !== '') {
+                    formData.append(key, value);
+                }
+            });
+            if (imageFile) formData.append('image', imageFile);
+
+            response = await createUser(formData);
         }
 
         const { success, token, message, userData } = response || {};
 
         if (success) {
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(userData));
-            console.log("User data:", userData);
-            // Use role to determine redirect path
-            if (userData.role === 'admin') {
-                navigate('/admin');
-            } else {
-                navigate('/');
+            try {
+                localStorage.setItem('token', token);
+                localStorage.setItem('user', JSON.stringify(userData));
+
+                const decoded = jwtDecode(token);
+                const expiryTime = decoded.exp * 1000;
+                localStorage.setItem('expiryTime', expiryTime);
+
+                setTimeout(() => {
+                    localStorage.clear();
+                    window.location.href = '/login';
+                }, expiryTime - Date.now());
+
+                navigate(userData?.role === 'admin' ? '/profile' : '/catalog');
+            } catch (decodeError) {
+                console.error("JWT Decode failed:", decodeError);
+                localStorage.clear();
+                setErrorMessage("Ошибка авторизации. Попробуйте снова.");
             }
         } else {
-            setErrorMessage(message || "An error occurred. Please try again.");
+            setErrorMessage(message || "Произошла ошибка. Попробуйте снова.");
         }
     };
 
 
-    const { user, token } = useUserStore();
+
+
+    // const { user, token } = useUserStore();
 
     // useEffect(() => {
     //     const token = localStorage.getItem('token');
@@ -66,10 +90,30 @@ const Auth = () => {
     // }, [navigate, user]);
 
     useEffect(() => {
-        if (user && token) {
-            navigate('/profile'); // or wherever you want to redirect them
+        const token = localStorage.getItem('token');
+        const expiryTime = localStorage.getItem('expiryTime');
+
+        if (token && expiryTime) {
+            const now = Date.now();
+            const expiry = Number(expiryTime);
+
+            if (isNaN(expiry) || now > expiry) {
+                localStorage.clear();
+                navigate('/login');
+            } else {
+                // Optional: auto-logout timer
+                const remainingTime = expiry - now;
+                setTimeout(() => {
+                    localStorage.clear();
+                    window.location.href = '/login';
+                }, remainingTime);
+
+                navigate('/profile');
+            }
         }
-    }, [user, token, navigate]);
+    }, [navigate]);
+
+    // console.log("Token for decoding:", token);
 
     return (
         <>
@@ -102,21 +146,31 @@ const Auth = () => {
                             onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
                         />
                         {!isLogin && (
-                            <select
-                                value={newUser.role}
-                                onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-                            >
-                                <option value="" disabled>Выберите роль</option>
-                                <option value={"user"}>Пользователь</option>
-                                <option value={"admin"}>Кондитерь</option>
-                            </select>
+                            <>
+                                <input type="text" name="phone" placeholder="Phone number" onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })} />
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => setImageFile(e.target.files[0])}
+                                />
+                                <select
+                                    value={newUser.role}
+                                    onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+                                >
+                                    <option value="" disabled>Выберите роль</option>
+                                    <option value={"user"}>Пользователь</option>
+                                    <option value={"admin"}>Кондитерь</option>
+                                </select>
+                                <textarea name="bio" placeholder="About you" onChange={(e) => setNewUser({ ...newUser, bio: e.target.value })}></textarea>
+                            </>
                         )}
-                        <button onClick={handleUserAction}>
+                        <button className='submit' onClick={handleUserAction}>
                             {isLogin ? "Войти" : "Добавить"}
                         </button>
                         {errorMessage && <p style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</p>}
                         <button
-                            style={{ marginTop: '10px', background: 'none', border: 'none', color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}
+                            className='switch'
+                            // style={{ marginTop: '10px', background: 'none', border: 'none', color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}
                             onClick={() => {
                                 setIsLogin(!isLogin);
                                 setErrorMessage('');

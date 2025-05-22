@@ -1,0 +1,199 @@
+.bakerPage {
+    display: flex;
+    margin: 0 auto;
+    max-width: 1460px;
+    gap: 151px;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.bakerPage h3 {
+    font-family: 'Futura New', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 25px;
+    color: rgba(195, 185, 181, 1);
+
+}
+
+.bakerPage p {
+    font-family: 'Futura New', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 30px;
+    color: rgba(61, 66, 73, 1);
+    margin-top: 40px;
+}
+
+.bakerPage .left-side {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.bakerPage .left-side img {
+    height: 333px;
+    width: 333px;
+    border-radius: 50%;
+}
+
+/* .bakerPage .left-side h3 {
+    margin-top: 30px;
+} */
+
+.bakerPage .signUp {
+    margin-top: 30px;
+    padding: 24px 77px;
+    border: 2px solid #9C0746;
+    color: #9C0746;
+    border-radius: 33.5px;
+    font-family: 'Futura New', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.bakerPage .signUp:hover {
+    color: rgba(255, 255, 255, 1);
+    background-color: #9C0746;
+    box-shadow: 0px 4px 20px 0px #9c07458c;
+}
+
+.bakerPage .comment {
+    margin-top: 16px;
+    padding: 24px 56px;
+    color: rgba(255, 197, 158, 1);
+    background-color: transparent;
+    border: none;
+    font-family: 'Futura New', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+.bakerPage .right-side {
+    display: flex;
+    flex-direction: column;
+    margin-top: 75px;
+}
+
+.bakerPage .back {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: transparent;
+    font-family: 'Futura New', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 20px;
+    letter-spacing: 0px;
+    color: rgba(255, 197, 158, 1);
+    border: none;
+
+}
+
+.bakerPage .specialistInfo {
+    margin-top: 60px;
+}
+
+.bakerPage h2 {
+    font-family: 'SchoolBook', sans-serif;
+    font-weight: 400;
+    font-size: 50px;
+    line-height: 40px;
+    color: #9C0746;
+}
+
+/* .specialistInfo p {
+    margin-top: 40px;
+    font-size: 30px;
+} */
+
+.bakerPage .right-side .right-side__top span {
+    display: block;
+    margin-top: 30px;
+    font-size: 20px;
+}
+
+.bakerPage .right-side .right-side__top span a {
+    color: #9C0746;
+    text-decoration: underline;
+}
+
+.bakerPage .comments {
+    margin-top: 100px;
+}
+
+.bakerPage .commentaries {
+    margin-top: 30px;
+    border: 1px solid rgba(237, 233, 232, 1);
+    border-radius: 20px;
+    background-color: white;
+    padding: 30px 30px;
+    display: flex;
+    gap: 30px;
+
+}
+
+.bakerPage .commentaries img {
+    width: 130px;
+    height: 130px;
+}
+
+.bakerPage .comment-user,
+.comment-content,
+.answer-text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+
+.bakerPage .comment-content {
+    margin-top: 20px;
+}
+
+.bakerPage .comment-answer {
+    display: flex;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.products {
+    max-width: 1460px;
+    margin: auto;
+    padding-bottom: 100px;
+}
+
+.products h2 {
+    font-family: 'SchoolBook', sans-serif;
+    font-weight: 400;
+    font-size: 60px;
+    line-height: 110px;
+    color: #444251;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+/* .product-card {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    text-align: center;
+}
+
+.product-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+} */

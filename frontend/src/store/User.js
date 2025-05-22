@@ -13,14 +13,15 @@ export const useUserStore = create(
 
       setHydrated: (value) => set({ hydrated: value }),
 
-      createUser: async (userData) => {
+      createUser: async (formData) => {
         set({ loading: true, errorMessage: '' });
+
         try {
           const res = await fetch('/api/register', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userData),
+            body: formData,
           });
+
           let data;
           try {
             data = await res.json();
@@ -40,6 +41,7 @@ export const useUserStore = create(
           return { success: false, message: err.message };
         }
       },
+
 
       loginUser: async (credentials) => {
         set({ loading: true, errorMessage: '' });
@@ -69,7 +71,10 @@ export const useUserStore = create(
         }
       },
 
-      logoutUser: () => set({ user: null, token: null, userInfo: null, errorMessage: '' }),
+      logoutUser: () => {
+        localStorage.clear();
+        set({ user: null, token: null });
+      },
 
       fetchProfile: async () => {
         const token = get().token;

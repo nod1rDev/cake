@@ -13,13 +13,14 @@ const productScheme = new mongoose.Schema({
         type: String,
         required: true
     },
-    desc: {
+    description: {
         type: String,
         required: true
     },
     createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // references the baker (user)
+    required: true,
   },
 }, {
     timestamps: true

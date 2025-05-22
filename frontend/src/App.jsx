@@ -12,6 +12,8 @@ import { useUserStore } from './store/User'
 import Bakers from './pages/Bakers'
 import OnlyAdmins from './components/OnlyAdmins'
 import OnlyAuthorized from './pages/OnlyAuthorized'
+import BakerDetail from './pages/BakerDetail'
+import OnlyUsers from './components/OnlyUsers'
 
 function App() {
   useEffect(() => {
@@ -25,7 +27,24 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/catalog' element={<Catalog />} />
+
+          <Route path='/catalog' element={
+            <OnlyUsers>
+              <Catalog />
+            </OnlyUsers>
+          } />
+          <Route path='/bakers' element={
+            <OnlyUsers>
+              <Bakers />
+            </OnlyUsers>
+          } />
+          <Route path='/bakers/:bakerId' element={
+            <OnlyUsers>
+              <BakerDetail />
+            </OnlyUsers>
+          } />
+
+
         <Route
           path="/admin"
           element={
@@ -34,6 +53,7 @@ function App() {
             </OnlyAdmins>
           }
         />
+
         <Route path='/register' element={<Auth />} />
         <Route
           path="/profile"
@@ -43,7 +63,6 @@ function App() {
             </OnlyAuthorized>
           }
         />
-        <Route path='/bakers' element={<Bakers />} />
       </Routes>
       <Footer />
     </>
