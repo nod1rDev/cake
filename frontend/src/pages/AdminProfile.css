@@ -1,0 +1,188 @@
+.profile {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 1460px;
+    gap: 151px;
+}
+
+.profile .left-side {
+    margin-top: 160px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile .left-side h1 {
+    font-family: 'SchoolBook', sans-serif;
+    font-weight: 400;
+    font-size: 80px;
+    line-height: 110px;
+}
+
+.profile .VikaLinks {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+}
+
+.profile .VikaLinks a {
+    font-family: 'Futura New', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 30px;
+    color: rgba(195, 185, 181, 1);
+}
+
+.profile .right-side {
+    margin-top: 65px;
+    display: flex;
+    flex-direction: column;
+}
+
+.PersonalInfo h2 {
+    font-family: 'SchoolBook', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 40px;
+}
+
+
+.profile .PersonalInfo-container {
+    background-color: white !important;
+    margin-top: 30px;
+    display: flex;
+    gap: 30px;
+    border: 1px solid rgba(237, 233, 232, 1);
+    border-radius: 20px;
+    padding: 30px 30px;
+}
+
+.profile .PersonalInfo-container-left {
+    display: flex;
+    gap: 30px;
+}
+
+.profile img {
+    width: 130px;
+    height: 130px;
+}
+
+.profile .PersonalInfo-container-left-text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile .info-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile h3 {
+    font-family: 'Futura New', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 15px;
+    letter-spacing: 0px;
+    color: rgba(195, 185, 181, 1);
+
+}
+
+.profile button {
+    font-family: 'Futura New', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 25px;
+}
+
+.profile .PersonalInfo-container-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 409px;
+}
+
+.profile .pets {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.profile .pets h2 {
+    font-family: 'SchoolBook', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 50px;
+}
+
+.profile .add-pet {
+    border-radius: 20px;
+    background-color: rgba(255, 197, 158, 1);
+    padding: 10px 60px;
+    align-items: center;
+    display: flex;
+    gap: 40px;
+
+
+}
+
+.profile .add-pet p {
+    font-family: 'Futura New', sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 30px;
+    letter-spacing: 0px;
+    color: rgba(255, 255, 255, 1);
+    text-transform: uppercase;
+
+}
+
+.profile .pets-container {
+    display: flex;
+    gap: 30px;
+    flex-direction: column;
+
+
+}
+
+.profile .pet-card {
+    border: 1px solid rgba(237, 233, 232, 1);
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 30px 30px;
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+
+.profile .pet-card-container {
+    display: flex;
+    gap: 30px;
+}
+
+.profile .pet-card-container-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile .otherInformation {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 350px;
+}
+
+.profile .image-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    color: rgba(255, 197, 158, 1);
+
+}

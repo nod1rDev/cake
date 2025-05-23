@@ -37,7 +37,6 @@ export const baker = async (req, res) => {
     }
 }
 
-<<<<<<< HEAD
 export const getBakerById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -84,26 +83,6 @@ export const register = async (req, res) => {
     }
 };
 
-=======
-
-export const register = async (req, res) => {
-    const { name, email, password, role } = req.body
-    try {
-        let user = await User.findOne({ email })
-        if (user) return res.status(400).json({ msg: "User already exists" })
-
-        user = new User({ name, email, password, role })
-        await user.save()
-
-        const payload = { userId: user.id }
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
-
-        res.json({ success: true, token })
-    } catch (error) {
-        return res.status(500).json({ success: false, msg: 'Server error' });
-    }
-}
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
 
 // export const login = async (req, res) => {
 //     const { email, password } = req.body

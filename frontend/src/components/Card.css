@@ -10,10 +10,16 @@
     padding-bottom: 10px;
 }
 
-.cake-options .cake{
+.cake-options img{
+    display: block;
     width: 100%;
     height: 65%;
 }
+
+/* .cake-options .cake{
+    width: 100%;
+    height: 65%;
+} */
 
 .name-price {
     width: 85%;

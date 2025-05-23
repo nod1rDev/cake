@@ -16,7 +16,6 @@ const Navbar = () => {
         // On mount, check if data is in localStorage and set it in Zustand if not present
         const storedUser = localStorage.getItem('user');
         const storedToken = localStorage.getItem('token');
-<<<<<<< HEAD
         if (
             storedUser &&
             storedUser !== "undefined" &&
@@ -32,14 +31,8 @@ const Navbar = () => {
             } catch (e) {
                 // clean up bad data
                 localStorage.removeItem('user');
+                console.log(e);
             }
-=======
-        if (storedUser && storedToken && !user && !token) {
-            setUserData({
-                user: JSON.parse(storedUser),
-                token: storedToken,
-            });
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
         }
     }, [user, token, setUserData]);
 

@@ -4,27 +4,19 @@ import './Auth.css';
 import { useUserStore } from '../store/User';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-<<<<<<< HEAD
 import { jwtDecode } from 'jwt-decode';
-=======
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
 
 const Auth = () => {
     const [newUser, setNewUser] = useState({
         name: "",
         email: "",
         password: "",
-<<<<<<< HEAD
         role: "",
         bio: "",
         phone: ""
     });
 
     const [imageFile, setImageFile] = useState(null);
-=======
-        role: ""
-    });
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
     const [isLogin, setIsLogin] = useState(true); // State to toggle between login and registration
     const [errorMessage, setErrorMessage] = useState(""); // State for error messages
 
@@ -33,7 +25,6 @@ const Auth = () => {
 
     const handleUserAction = async () => {
         let response;
-<<<<<<< HEAD
 
         if (isLogin) {
             response = await loginUser({ email: newUser.email, password: newUser.password });
@@ -47,20 +38,11 @@ const Auth = () => {
             if (imageFile) formData.append('image', imageFile);
 
             response = await createUser(formData);
-=======
-        if (isLogin) {
-            // Handle login
-            response = await loginUser({ email: newUser.email, password: newUser.password });
-        } else {
-            // Handle registration
-            response = await createUser(newUser);
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
         }
 
         const { success, token, message, userData } = response || {};
 
         if (success) {
-<<<<<<< HEAD
             try {
                 localStorage.setItem('token', token);
                 localStorage.setItem('user', JSON.stringify(userData));
@@ -82,30 +64,13 @@ const Auth = () => {
             }
         } else {
             setErrorMessage(message || "Произошла ошибка. Попробуйте снова.");
-=======
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(userData));
-            console.log("User data:", userData);
-            // Use role to determine redirect path
-            if (userData.role === 'admin') {
-                navigate('/admin');
-            } else {
-                navigate('/');
-            }
-        } else {
-            setErrorMessage(message || "An error occurred. Please try again.");
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
         }
     };
 
 
-<<<<<<< HEAD
 
 
     // const { user, token } = useUserStore();
-=======
-    const { user, token } = useUserStore();
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
 
     // useEffect(() => {
     //     const token = localStorage.getItem('token');
@@ -125,7 +90,6 @@ const Auth = () => {
     // }, [navigate, user]);
 
     useEffect(() => {
-<<<<<<< HEAD
         const token = localStorage.getItem('token');
         const expiryTime = localStorage.getItem('expiryTime');
 
@@ -150,12 +114,6 @@ const Auth = () => {
     }, [navigate]);
 
     // console.log("Token for decoding:", token);
-=======
-        if (user && token) {
-            navigate('/profile'); // or wherever you want to redirect them
-        }
-    }, [user, token, navigate]);
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
 
     return (
         <>
@@ -188,7 +146,6 @@ const Auth = () => {
                             onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
                         />
                         {!isLogin && (
-<<<<<<< HEAD
                             <>
                                 <input type="text" name="phone" placeholder="Phone number" onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })} />
                                 <input
@@ -208,28 +165,12 @@ const Auth = () => {
                             </>
                         )}
                         <button className='submit' onClick={handleUserAction}>
-=======
-                            <select
-                                value={newUser.role}
-                                onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-                            >
-                                <option value="" disabled>Выберите роль</option>
-                                <option value={"user"}>Пользователь</option>
-                                <option value={"admin"}>Кондитерь</option>
-                            </select>
-                        )}
-                        <button onClick={handleUserAction}>
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
                             {isLogin ? "Войти" : "Добавить"}
                         </button>
                         {errorMessage && <p style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</p>}
                         <button
-<<<<<<< HEAD
                             className='switch'
                             // style={{ marginTop: '10px', background: 'none', border: 'none', color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}
-=======
-                            style={{ marginTop: '10px', background: 'none', border: 'none', color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
                             onClick={() => {
                                 setIsLogin(!isLogin);
                                 setErrorMessage('');
@@ -258,8 +199,4 @@ const Auth = () => {
     );
 };
 
-<<<<<<< HEAD
 export default Auth;
-=======
-export default Auth;
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213

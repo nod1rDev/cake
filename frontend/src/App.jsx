@@ -29,19 +29,19 @@ function App() {
         <Route path='/' element={<Home />} />
 
         <Route path='/catalog' element={
-          <OnlyUsers>
+          // <OnlyUsers>
             <Catalog />
-          </OnlyUsers>
+          // </OnlyUsers>
         } />
         <Route path='/bakers' element={
-          <OnlyUsers>
+          // <OnlyUsers>
             <Bakers />
-          </OnlyUsers>
+          // </OnlyUsers>
         } />
         <Route path='/bakers/:bakerId' element={
-          <OnlyUsers>
+          // <OnlyUsers>
             <BakerDetail />
-          </OnlyUsers>
+          // </OnlyUsers>
         } />
 
 

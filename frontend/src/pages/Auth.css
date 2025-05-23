@@ -64,11 +64,7 @@
     transition: .3s;
 }
 
-<<<<<<< HEAD
 .container_add .submit {
-=======
-.container_add button {
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
     background: linear-gradient(85.61deg, #9C0746 -15.57%, #B44E79 128.11%);
     padding: 20px 121px;
     box-shadow: 0px 20px 40px 0px #42021D4F;
@@ -80,11 +76,7 @@
     border-radius: 50px;
 }
 
-<<<<<<< HEAD
 .container_add .submit:hover{
-=======
-.container_add button:hover{
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
     background: #9c0745;
 }
 
@@ -92,7 +84,6 @@
     box-shadow: 0 0 10px #9c07458c;
 }
 
-<<<<<<< HEAD
 .admin-main .switch{
     margin-top: 40px;
     background: transparent;
@@ -105,6 +96,3 @@
 .admin-main .switch:hover{
     background-color: transparent;
 }
-=======
-
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213

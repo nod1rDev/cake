@@ -20,7 +20,6 @@ const UserSchema = new mongoose.Schema({
         enum: ['admin', 'user'],
         default: 'user',
         required: true,
-<<<<<<< HEAD
     },
     image: {
         type: String,
@@ -36,9 +35,6 @@ const UserSchema = new mongoose.Schema({
         default: 'Я пекарь',
         required: true,
     },
-=======
-    }
->>>>>>> 13ff719771e129e3621ca181e7d093f72f569213
 })
 
 UserSchema.pre('save', async function (next) {
