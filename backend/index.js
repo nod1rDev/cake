@@ -16,10 +16,9 @@ const app = express();
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+const cors = require('cors');
 app.use(cors({
-    origin: 'http://localhost:5173', // Make sure this matches your frontend origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
+  origin: 'https://cake-1-c7u4.onrender.com',
 }));
 
 app.use(express.json());
