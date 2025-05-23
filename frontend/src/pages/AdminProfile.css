@@ -4,6 +4,7 @@
     margin: 0 auto;
     max-width: 1460px;
     gap: 151px;
+    padding-bottom: 100px;
 }
 
 .profile .left-side {
@@ -25,14 +26,6 @@
     flex-direction: column;
     gap: 30px;
 
-}
-
-.profile .VikaLinks a {
-    font-family: 'Futura New', sans-serif;
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 30px;
-    color: rgba(195, 185, 181, 1);
 }
 
 .profile .right-side {
@@ -69,6 +62,10 @@
     height: 130px;
 }
 
+.profile .image-container a{
+    color: #9C0746;
+}
+
 .profile .PersonalInfo-container-left-text {
     display: flex;
     flex-direction: column;
@@ -91,11 +88,38 @@
 
 }
 
-.profile button {
+.profile .logout {
+    background: transparent;
+    outline: none;
+    border: none;
+    padding: unset;
     font-family: 'Futura New', sans-serif;
-    font-weight: 400;
+    font-weight: 700;
     font-size: 20px;
-    line-height: 25px;
+    line-height: 30px;
+    color: rgba(195, 185, 181, 1);
+    border: 1px solid rgba(195, 185, 181, 1);
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.profile .add-pet {
+    font-family: 'Futura New', sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 30px;
+    letter-spacing: 0px;
+    color: rgba(255, 255, 255, 1);
+    text-transform: uppercase;
+    border: none;
+    border-radius: 20px;
+    background-color: #9C0746;
+    padding: 10px 60px;
+    align-items: center;
+    display: flex;
+    gap: 40px;
+    width: 820px;
+    height: 150px;
 }
 
 .profile .PersonalInfo-container-right {
@@ -119,70 +143,3 @@
     line-height: 50px;
 }
 
-.profile .add-pet {
-    border-radius: 20px;
-    background-color: rgba(255, 197, 158, 1);
-    padding: 10px 60px;
-    align-items: center;
-    display: flex;
-    gap: 40px;
-
-
-}
-
-.profile .add-pet p {
-    font-family: 'Futura New', sans-serif;
-    font-weight: 700;
-    font-size: 30px;
-    line-height: 30px;
-    letter-spacing: 0px;
-    color: rgba(255, 255, 255, 1);
-    text-transform: uppercase;
-
-}
-
-.profile .pets-container {
-    display: flex;
-    gap: 30px;
-    flex-direction: column;
-
-
-}
-
-.profile .pet-card {
-    border: 1px solid rgba(237, 233, 232, 1);
-    border-radius: 20px;
-    background-color: rgba(255, 255, 255, 1);
-    padding: 30px 30px;
-    display: flex;
-    justify-content: space-between;
-    /* align-items: center; */
-}
-
-.profile .pet-card-container {
-    display: flex;
-    gap: 30px;
-}
-
-.profile .pet-card-container-left {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.profile .otherInformation {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 350px;
-}
-
-.profile .image-container {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    align-items: center;
-    color: rgba(255, 197, 158, 1);
-
-}
