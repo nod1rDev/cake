@@ -1,16 +1,54 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './ProductCard.css'
 import { Link } from 'react-router-dom'
+import { useUserStore } from '../store/User'
+import { useProductStore } from '../store/Product'
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onDelete }) => {
+    const [isDeleting, setIsDeleting] = useState(false)
+    const { token } = useUserStore()
+    const { deleteProduct } = useProductStore()
+
+    const handleDelete = async () => {
+        if (!window.confirm('Вы уверены, что хотите удалить этот продукт?')) {
+            return
+        }
+
+        setIsDeleting(true)
+        try {
+            const result = await deleteProduct(product._id, token)
+            
+            if (result.success) {
+                if (onDelete) {
+                    onDelete()
+                }
+            } else {
+                alert(result.message || 'Ошибка при удалении продукта')
+            }
+        } catch (error) {
+            console.error('Error deleting product:', error)
+            alert('Произошла ошибка при удалении продукта')
+        } finally {
+            setIsDeleting(false)
+        }
+    }
+
     return (
         <>
             <div className="pet-card">
                 <div className="pet-card-container">
                     <div className="image-container">
-                        <img src="images/Ellipse.png" alt="" />
-                        <Link>изменить</Link>
-
+                        <img src={`http://localhost:5000${product.image}`} alt={product.name} />
+                        <div className="action-buttons">
+                            <Link to={`/edit-product/${product._id}`}>изменить</Link>
+                            <button 
+                                onClick={handleDelete}
+                                disabled={isDeleting}
+                                className="delete-btn"
+                            >
+                                {isDeleting ? 'Удаление...' : 'удалить'}
+                            </button>
+                        </div>
                     </div>
                     <div className="pet-card-container-left">
                         <h2>{product?.name}</h2>

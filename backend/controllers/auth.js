@@ -131,3 +131,46 @@ export const login = async (req, res) => {
         return res.status(500).json({ success: false, msg: 'Server error' });
     }
 };
+
+export const updateProfile = async (req, res) => {
+    try {
+        const { name, email, phone, bio } = req.body;
+        const userId = req.user.id;
+
+        // Find the user
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        // Update fields if provided
+        if (name) user.name = name;
+        if (email) user.email = email;
+        if (phone) user.phone = phone;
+        if (bio) user.bio = bio;
+
+        // Update image if uploaded
+        if (req.file) {
+            user.image = `/uploads/${req.file.filename}`;
+        }
+
+        // Save the updated user
+        await user.save();
+
+        // Return updated user data (without password)
+        const userData = {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            bio: user.bio,
+            image: user.image,
+            role: user.role,
+        };
+
+        res.json({ success: true, message: 'Profile updated successfully', userData });
+    } catch (error) {
+        console.error('Update profile error:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+};

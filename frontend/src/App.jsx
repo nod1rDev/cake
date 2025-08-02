@@ -7,6 +7,9 @@ import Footer from './pages/Footer'
 import Admin from './pages/Admin'
 import Auth from './pages/Auth'
 import Profile from './pages/Profile'
+import EditProduct from './pages/EditProduct'
+import EditProfile from './pages/EditProfile'
+import SingleProduct from './pages/SingleProduct'
 import { useEffect } from 'react'
 import { useUserStore } from './store/User'
 import Bakers from './pages/Bakers'
@@ -33,6 +36,7 @@ function App() {
             <Catalog />
           // </OnlyUsers>
         } />
+        <Route path='/product/:productId' element={<SingleProduct />} />
         <Route path='/bakers' element={
           // <OnlyUsers>
             <Bakers />
@@ -51,6 +55,22 @@ function App() {
             <OnlyAdmins>
               <Admin />
             </OnlyAdmins>
+          }
+        />
+        <Route
+          path="/edit-product/:productId"
+          element={
+            <OnlyAdmins>
+              <EditProduct />
+            </OnlyAdmins>
+          }
+        />
+        <Route
+          path="/edit-profile"
+          element={
+            <OnlyAuthorized>
+              <EditProfile />
+            </OnlyAuthorized>
           }
         />
         <Route path='/register' element={<Auth />} />

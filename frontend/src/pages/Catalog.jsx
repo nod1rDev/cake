@@ -1,39 +1,51 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Catalog.css'
 import Card from '../components/Card.jsx'
 import { Link } from 'react-router-dom'
 import { useProductStore } from '../store/Product.js'
 
 const Catalog = () => {
-    const { fetchProducts, products } = useProductStore()
+    const { fetchProducts, fetchCategories, fetchProductsByCategory, products, categories } = useProductStore()
+    const [selectedCategory, setSelectedCategory] = useState(null)
 
     useEffect(() => {
         fetchProducts()
-    }, [fetchProducts])
-    console.log(products);
+        fetchCategories()
+    }, [fetchProducts, fetchCategories])
+
+    const handleCategoryClick = (category) => {
+        setSelectedCategory(category)
+        fetchProductsByCategory(category._id)
+    }
+
+    const handleAllProducts = () => {
+        setSelectedCategory(null)
+        fetchProducts()
+    }
 
     return (
         <main>
             <div className="menu">
                 <h2>Меню</h2>
                 <form className="menu_form">
-                    <Link to={"#"}>Летнее меню</Link>
-                    <Link to={"#"}>Кофе и чай</Link>
-                    <Link to={"#"}>Холодные напитки</Link>
-                    <Link to={"#"}>Комбо</Link>
-                    <Link to={"#"}>Shoko Go</Link>
-                    <Link to={"#"}>Конструктор завтраков</Link>
-                    <Link to={"#"}>Завтраки весь день</Link>
-                    <Link to={"#"}>Блинчики</Link>
-                    <Link to={"#"}>Пицца от Eazzy Pizza & Gelato</Link>
-                    <Link to={"#"}>Супы</Link>
-                    <Link to={"#"}>Горячие блюда</Link>
-                    <Link to={"#"}>Только в доставке</Link>
-                    <Link to={"#"}>Салаты</Link>
-                    <Link to={"#"}>Десерты</Link>
-                    <Link to={"#"}>Добавки и соусы</Link>
+                    <Link to={"#"} onClick={handleAllProducts} className={!selectedCategory ? 'active' : ''}>
+                        Все продукты
+                    </Link>
+                    {categories && categories.length > 0 ? (
+                        categories.map((category) => (
+                            <Link 
+                                key={category._id} 
+                                to={"#"} 
+                                onClick={() => handleCategoryClick(category)}
+                                className={selectedCategory?._id === category._id ? 'active' : ''}
+                            >
+                                {category.name}
+                            </Link>
+                        ))
+                    ) : (
+                        <p>Загрузка категорий...</p>
+                    )}
                 </form>
-
             </div>
             <div className="catalogue">
                 <h2>Каталог</h2>

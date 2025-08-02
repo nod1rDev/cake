@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import productRoutes from './routes/Product.js';
 import authRoutes from './routes/auth.js';
+import categoryRoutes from './routes/Category.js';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -14,16 +15,16 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
-const cors = require('cors');
 app.use(cors({
-  origin: 'https://cake-1-c7u4.onrender.com',
+  origin: "*",
 }));
 
 app.use(express.json());
 
 app.use('/api/products', productRoutes);
+app.use('/api/categories', categoryRoutes);
 app.use('/api/', authRoutes);
 
 app.use((err, req, res, next) => {

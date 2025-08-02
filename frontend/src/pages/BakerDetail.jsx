@@ -32,7 +32,7 @@ const BakerDetail = () => {
 
     const normalizedImagePath = selectedBaker.image ? selectedBaker.image.replace(/\\/g, '/') : '';
     const imageUrl = normalizedImagePath
-        ? `http://localhost:3000${normalizedImagePath.startsWith('/') ? normalizedImagePath : '/' + normalizedImagePath}`
+        ? `http://localhost:5000${normalizedImagePath.startsWith('/') ? normalizedImagePath : '/' + normalizedImagePath}`
         : profile;
 
     return (

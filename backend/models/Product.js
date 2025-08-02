@@ -17,6 +17,11 @@ const productScheme = new mongoose.Schema({
         type: String,
         required: true
     },
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+        required: true
+    },
     createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // references the baker (user)

@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 export const useProductStore = create((set) => ({
     products: [],
+    categories: [],
     loading: false,
     error: '',
     success: '',
@@ -70,4 +71,66 @@ export const useProductStore = create((set) => ({
             set({ loading: false, error: err.message });
         }
     },
+
+    fetchCategories: async () => {
+        set({ loading: true, error: '' });
+        try {
+            const res = await fetch('/api/categories');
+            const response = await res.json();
+            if (!res.ok) throw new Error(response.message || 'Failed to fetch categories');
+
+            set({ categories: response.data, loading: false });
+            return { success: true };
+        } catch (err) {
+            set({ loading: false, error: err.message });
+            return { success: false, message: err.message };
+        }
+    },
+
+    fetchProductsByCategory: async (categoryId) => {
+        set({ loading: true, error: '' });
+        try {
+            const res = await fetch(`/api/products/category/${categoryId}`);
+            const response = await res.json();
+            if (!res.ok) throw new Error(response.message || 'Failed to fetch products by category');
+
+            set({ products: response.data, loading: false });
+            return { success: true };
+        } catch (err) {
+            set({ loading: false, error: err.message });
+            return { success: false, message: err.message };
+        }
+    },
+
+    deleteProduct: async (productId, token) => {
+        set({ loading: true, error: '', success: '' });
+        try {
+            const res = await fetch(`/api/products/${productId}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                set({ loading: false, error: data.message || 'Ошибка удаления продукта' });
+                return { success: false, message: data.message || 'Ошибка удаления продукта' };
+            }
+
+            set((state) => ({
+                products: state.products.filter(product => product._id !== productId),
+                loading: false,
+                success: 'Продукт успешно удален!',
+            }));
+
+            return { success: true };
+        } catch (err) {
+            set({ loading: false, error: err.message || 'Ошибка сети' });
+            return { success: false, message: err.message || 'Ошибка сети' };
+        }
+    },
+
+    clearMessages: () => set({ error: '', success: '' }),
 }));

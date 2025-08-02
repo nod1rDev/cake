@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Admin.css';
 import { useProductStore } from '../store/Product';
 import { useUserStore } from '../store/User';
@@ -10,13 +10,20 @@ const Admin = () => {
     price: '',
     image: '',
     description: '',
+    category: '',
   });
 
   const [message, setMessage] = useState({ error: '', success: '' });
 
   const createProduct = useProductStore(state => state.createProduct);
+  const fetchCategories = useProductStore(state => state.fetchCategories);
+  const categories = useProductStore(state => state.categories);
   const loading = useProductStore(state => state.loading);
   const error = useProductStore(state => state.error);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   const user = useUserStore(state => state.user);
   const token = useUserStore(state => state.token);
@@ -25,14 +32,14 @@ const Admin = () => {
     try {
       setMessage({ error: '', success: '' });
 
-      const { name, price, image, description } = newProduct;
+      const { name, price, image, description, category } = newProduct;
 
       if (!user || !token) {
         setMessage({ error: 'Пользователь не аутентифицирован.', success: '' });
         return;
       }
 
-      if (!name || !price || !image || !description) {
+      if (!name || !price || !image || !description || !category) {
         setMessage({ error: 'Пожалуйста, заполните все поля.', success: '' });
         return;
       }
@@ -42,12 +49,13 @@ const Admin = () => {
       formData.append('price', price);
       formData.append('image', image); // If you're uploading an image file, this must be a File, not a string URL!
       formData.append('description', description);
+      formData.append('category', category);
 
       const result = await createProduct(formData, token);
 
       if (result.success) {
         setMessage({ success: 'Продукт успешно добавлен!', error: '' });
-        setNewProduct({ name: '', price: '', image: '', description: '' });
+        setNewProduct({ name: '', price: '', image: '', description: '', category: '' });
       } else {
         setMessage({ error: result.message || 'Не удалось добавить продукт.', success: '' });
       }
@@ -85,6 +93,22 @@ const Admin = () => {
             accept="image/*"
             onChange={(e) => setNewProduct({ ...newProduct, image: e.target.files[0] })}
           />
+          <select
+            value={newProduct.category}
+            onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+            required
+          >
+            <option value="">Выберите категорию</option>
+            {categories && categories.length > 0 ? (
+              categories.map((category) => (
+                <option key={category._id} value={category._id}>
+                  {category.name}
+                </option>
+              ))
+            ) : (
+              <option value="" disabled>Загрузка категорий...</option>
+            )}
+          </select>
           <textarea
             placeholder="Описание продукта"
             value={newProduct.description}
