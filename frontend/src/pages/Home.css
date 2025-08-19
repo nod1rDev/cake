@@ -1,0 +1,158 @@
+.hero {
+    background-color: #8b1538;
+    padding: 100px 0;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+}
+
+.hero h1 {
+    color: #fff;
+    font-size: 70px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    color: #fff;
+    font-size: 30px;
+    margin-bottom: 40px;
+    width: 60%;
+}
+
+.hero .btns {
+    display: flex;
+    gap: 20px;
+}
+
+.hero .btns button {
+    background-color: transparent;
+    color: #fff;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    border: 1px solid #fff;
+}
+
+.hero .btns button:first-child {
+    background-color: #fff;
+    color: #8b1538;
+}
+
+.hero .btns button:hover {
+    background-color: #fff;
+    color: #8b1538;
+    transition: .3s;
+}
+
+.why {
+    padding: 50px 0;
+}
+
+.why h2 {
+    color: #101828;
+    font-size: var(--text-3xl);
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.why .context {
+    color: #4a5565;
+    font-size: 20px;
+    text-align: center;
+    width: 50%;
+    margin: auto;
+    margin-bottom: 40px;
+}
+
+.why .features {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.why .feature {
+    width: 390px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.why .feature .img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #a64d5f3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: #5c0e25;
+    margin-bottom: 16px;
+}
+
+.why .feature h3 {
+    color: #101828;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.why .feature p {
+    color: #4a5565;
+    font-size: 18px;
+    text-align: center;
+}
+
+.bakers_home {
+    padding: 64px 0;
+    background: var(--white);
+}
+
+.bakers_home h2 {
+    font-size: var(--text-3xl);
+    color: var(--black);
+}
+
+.bakers_home .top {
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bakers_home .bakers-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.cakes {
+    background-color: var(--background);
+}
+
+.cakes h2 {
+    font-size: var(--text-3xl);
+    color: var(--black);
+}
+
+.viewAll {
+    padding: 8px 16px;
+    font-size: var(--text-sm);
+    background-color: var(--background);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.26);
+    border-radius: calc(var(--radius) - 2px);
+    font-weight: 500;
+    color: var(--black);
+}
+
+.cakes .top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+}

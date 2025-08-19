@@ -1,0 +1,67 @@
+.bakers {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 1460px;
+    gap: 151px;
+    padding-bottom: 100px;
+    padding-top: 100px;
+}
+
+.bakers .left-side {
+    display: flex;
+    flex-direction: column;
+}
+
+.bakers .left-side h1 {
+    font-family: 'SchoolBook', sans-serif;
+    font-weight: 400;
+    font-size: 80px;
+    line-height: 110px;
+    color: #444251;
+}
+
+.bakers .Community {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+}
+
+/* .bakers .Community a {
+    font-family: 'Futura New', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 30px;
+    color: rgba(195, 185, 181, 1);
+} */
+
+.bakers .right-side {
+    display: flex;
+    flex-direction: column;
+}
+
+.bakers .about {
+    margin-top: 50px;
+}
+
+.bakers h3 {
+    font-family: 'SchoolBook', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 40px;
+    letter-spacing: 0px;
+    color: #444251;
+}
+
+.bakers .about p {
+    font-family: 'Futura New', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+    letter-spacing: 0px;
+    color: rgba(89, 68, 63, 1);
+    margin-top: 30px;
+}
+

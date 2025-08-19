@@ -1,0 +1,138 @@
+.mainNav {
+    background-color: white;
+    max-width: 100%;
+    margin: 0 auto;
+    height: 90px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mainNav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mainNav .block {
+    display: flex;
+    align-items: center;
+    gap: 33px;
+}
+
+.menu-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.menu-header a {
+    color: rgba(61, 66, 73, 1);
+    font-weight: 500;
+    font-size: var(--text-lg);
+    line-height: 17.5px;
+    letter-spacing: 0%;
+}
+
+.menu-header a:hover {
+    color: #9C0746;
+}
+
+
+.catalogue-button {
+    margin-left: 5px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17.5px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 16px;
+    border-radius: 45px;
+    border: none;
+    background-color: var(--primary);
+    color: white;
+}
+
+.profile-button {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    gap: 11px;
+    border: 1px solid rgba(219, 225, 237, 1);
+    border-radius: 45px;
+    background-color: transparent;
+    transition: .3s;
+    color: rgba(61, 66, 73, 1);
+}
+
+.profile-button:hover {
+    border-color: #9C0746;
+    box-shadow: 0 0 10px #9c07458c;
+}
+
+.cart-icon {
+    font-size: 24px;
+    display: flex;
+    align-self: center;
+    color: rgba(61, 66, 73, 1);
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+
+
+
+
+
+.catalog-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 20px;
+    background-color: #80002a;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.catalog-button:hover {
+    background-color: #a2003a;
+}
+
+.menu-icon {
+    font-size: 16px;
+}
+
+/* Dropdown styles */
+.catalog-dropdown {
+    position: absolute;
+    top: 60px; /* Adjust based on your layout */
+    left: 150px; /* Adjust based on button position */
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    z-index: 1000;
+}
+
+.catalog-dropdown a {
+    display: block;
+    padding: 10px 20px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.catalog-dropdown a:hover {
+    background-color: #f5f5f5;
+}

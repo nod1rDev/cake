@@ -1,0 +1,29 @@
+footer {
+    /* margin-top: 45px; */
+    background-color: var(--primary);
+}
+
+.footer_content {
+    align-items: center;
+    height: 74px;
+    margin: 0 auto;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer_content div p,
+.footer_content div a,
+.footer_content p {
+    color: rgba(255, 255, 255, 1);
+    font-family: Inter;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16.94px;
+}
+
+.footer_content div {
+    display: flex;
+    align-items: center;
+    gap: 31px;
+}

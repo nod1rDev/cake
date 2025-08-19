@@ -1,0 +1,357 @@
+.profile {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 1460px;
+    gap: 151px;
+    padding-bottom: 100px;
+}
+
+.profile .left-side {
+    margin-top: 160px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile .left-side h1 {
+    font-family: 'SchoolBook', sans-serif;
+    font-weight: 400;
+    font-size: 80px;
+    line-height: 110px;
+}
+
+.profile .VikaLinks {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+}
+
+.profile .right-side {
+    margin-top: 65px;
+    display: flex;
+    flex-direction: column;
+}
+
+.PersonalInfo h2 {
+    font-family: 'SchoolBook', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 40px;
+}
+
+
+.profile .PersonalInfo-container {
+    background-color: white !important;
+    margin-top: 30px;
+    display: flex;
+    gap: 30px;
+    border: 1px solid rgba(237, 233, 232, 1);
+    border-radius: 20px;
+    padding: 30px 30px;
+}
+
+.profile .PersonalInfo-container-left {
+    display: flex;
+    gap: 30px;
+}
+
+.profile img {
+    width: 130px;
+    height: 130px;
+}
+
+.profile .image-container a{
+    color: #9C0746;
+}
+
+.profile .PersonalInfo-container-left-text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile .info-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile h3 {
+    font-family: 'Futura New', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 15px;
+    letter-spacing: 0px;
+    color: rgba(195, 185, 181, 1);
+
+}
+
+.profile .logout {
+    background: transparent;
+    outline: none;
+    border: none;
+    padding: unset;
+    font-family: 'Futura New', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 30px;
+    color: rgba(195, 185, 181, 1);
+    border: 1px solid rgba(195, 185, 181, 1);
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.profile .add-pet {
+    font-family: 'Futura New', sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 30px;
+    letter-spacing: 0px;
+    color: rgba(255, 255, 255, 1);
+    text-transform: uppercase;
+    border: none;
+    border-radius: 20px;
+    background-color: #9C0746;
+    padding: 10px 60px;
+    align-items: center;
+    display: flex;
+    gap: 40px;
+    width: 820px;
+    height: 150px;
+}
+
+.profile .PersonalInfo-container-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 409px;
+}
+
+.profile .pets {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.profile .pets h2 {
+    font-family: 'SchoolBook', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 50px;
+}
+
+/* Category Management Styles */
+.categories {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.categories h2 {
+    font-family: 'SchoolBook', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 50px;
+}
+
+.categories h3 {
+    font-family: 'SchoolBook', sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 30px;
+    margin-bottom: 20px;
+}
+
+.error-message {
+    color: #e74c3c;
+    background-color: #fdf2f2;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.success-message {
+    color: #27ae60;
+    background-color: #f0f9ff;
+    border: 1px solid #b8e6b8;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.create-category {
+    background-color: white;
+    border: 1px solid rgba(237, 233, 232, 1);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.category-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.category-form input,
+.category-form textarea {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Futura New', sans-serif;
+    font-size: 14px;
+}
+
+.category-form textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.category-form button {
+    background-color: #9C0746;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: 'Futura New', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.category-form button:hover:not(:disabled) {
+    background-color: #7a0535;
+}
+
+.category-form button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.categories-list {
+    background-color: white;
+    border: 1px solid rgba(237, 233, 232, 1);
+    border-radius: 20px;
+    padding: 30px;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.category-item {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fafafa;
+}
+
+.category-display h4 {
+    font-family: 'Futura New', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.category-display p {
+    font-family: 'Futura New', sans-serif;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.category-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.category-actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Futura New', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.category-actions button:first-child {
+    background-color: #3498db;
+    color: white;
+}
+
+.category-actions button:first-child:hover {
+    background-color: #2980b9;
+}
+
+.category-actions .delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.category-actions .delete-btn:hover {
+    background-color: #c0392b;
+}
+
+.edit-category {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.edit-category input,
+.edit-category textarea {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'Futura New', sans-serif;
+    font-size: 14px;
+}
+
+.edit-category textarea {
+    min-height: 60px;
+    resize: vertical;
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-buttons button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Futura New', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-buttons button:first-child {
+    background-color: #27ae60;
+    color: white;
+}
+
+.edit-buttons button:first-child:hover {
+    background-color: #229954;
+}
+
+.edit-buttons button:last-child {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.edit-buttons button:last-child:hover {
+    background-color: #7f8c8d;
+}
+

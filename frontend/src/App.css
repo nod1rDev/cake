@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+/* @import "tailwindcss"; */
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: Inter;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--background);
+}
+
+button {
+  cursor: pointer;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.App {
+  min-height: 100vh;
+  /* always at least full screen */
+  position: relative;
+  padding-bottom: 80px;
+  /* height of footer */
+  box-sizing: border-box;
+}
+
+footer {
+  height: 80px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+:root {
+  --primary: #8b1538;
+  --black: #101828;
+  --white: #ffffff;
+  --gray: #4a5565;
+  --yellow: #fbbf24;
+  --card-background: oklch(0.98 0.01 30);
+  --text-3xl: 1.875rem;
+  --text-2xl: 1.5rem;
+  --text-xl: 1.25rem;
+  --text-lg: 1.125rem;
+  --text-base: 1rem;
+  --text-sm: 0.875rem;
+  --text-xs: 0.75rem;
+  --gray-600: oklch(44.6% 0.03 256.802);
+  --gray-500: oklch(55.1% 0.027 264.364);
+  --hashtag-color: oklch(.35 .15 15);
+  --secondary: oklch(.96 .01 15);
+  --text-xs--line-height: calc(1 / 0.75);
+  --radius: .75rem;
+  --primary-foreground: oklch(.98 .01 15);
+  --accent-foreground: oklch(.35 .15 15);
+  --accent: oklch(.96 .01 15);
+  --background: oklch(.99 .005 30);
+  --accent-foreground: oklch(.35 .15 15);
+
+  --tw-shadow {
+    syntax: "*";
+    inherits: false;
+    initial-value: 0 0 #0000;
+  }
+}
