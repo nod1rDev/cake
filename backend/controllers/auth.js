@@ -64,7 +64,7 @@ export const register = async (req, res) => {
         await user.save();
 
         const payload = { userId: user.id };
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
 
         const userData = {
             name: user.name,

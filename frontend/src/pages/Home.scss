@@ -133,6 +133,7 @@
 
 .cakes {
     background-color: var(--background);
+    padding: 64px 0;
 }
 
 .cakes h2 {
@@ -155,4 +156,10 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 32px;
+}
+
+.product_cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
 }

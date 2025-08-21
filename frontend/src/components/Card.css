@@ -11,6 +11,10 @@
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
 }
 
 .cake-options:hover {
@@ -73,23 +77,11 @@ hr {
     top: 0px;
 }
 
-.cart {
-    position: absolute;
-    font-family: Inter;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 17.5px;
-    color: #FFFFFF;
+.view {
     display: flex;
     align-items: center;
-    width: 100%;
-    height: 44px;
-    border: none;
-    background-color: #9C0746;
     justify-content: center;
-    column-gap: 11px;
-    bottom: -44px;
-    transition: .3s;
+    gap: 7px;
 }
 
 .icon{
@@ -124,6 +116,7 @@ hr {
 
 .product_card {
     position: relative;
+    overflow: hidden;
 }
 
 .rate_price{

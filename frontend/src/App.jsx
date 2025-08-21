@@ -38,7 +38,7 @@ function App() {
           <Cakes />
           // </OnlyUsers>
         } />
-        <Route path='/product/:productId' element={<SingleProduct />} />
+        <Route path='/cakes/:productId' element={<CakeDetails />} />
         <Route path='/bakers' element={
           // <OnlyUsers>
           <Bakers />

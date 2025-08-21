@@ -3,7 +3,7 @@ import { useUserStore } from '../store/User';
 import { Link, useNavigate } from 'react-router-dom';
 import { useProductStore } from '../store/Product';
 import { useCategoryStore } from '../store/Category';
-import './AdminProfile.css';
+import './AdminProfile.scss';
 import ProductCard from '../components/ProductCard';
 import profileImage from '../assets/profile.jpg';
 

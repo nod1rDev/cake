@@ -1,107 +1,73 @@
+// src/pages/Cart.jsx
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useCartStore } from "../store/Cart.js";
-import { useUserStore } from "../store/User.js";
-import "./Cart.css";
+import { useCartStore } from "../store/Cart";
+import { useUserStore } from "../store/User";
+import CartItem from "../components/CartItem";
+import './Cart.scss';
+import { RiShoppingBag3Line } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
-    const { cart, setCart } = useCartStore();
+    const { cart, fetchCart } = useCartStore();
     const { token } = useUserStore();
     const [loading, setLoading] = useState(true);
 
-    // Fetch cart from backend when page loads
+    // Fetch cart when page loads
     useEffect(() => {
-        if (!token) return;
-        const fetchCart = async () => {
-            try {
-                const res = await axios.get("http://localhost:5000/api/cart", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setCart(res.data); // store in Zustand
-            } catch (err) {
-                console.error("Error fetching cart:", err);
-            } finally {
-                setLoading(false);
+        const loadCart = async () => {
+            if (token) {
+                await fetchCart(token);
             }
+            setLoading(false); // ✅ always stop loading
         };
-        fetchCart();
-    }, [token, setCart]);
+        loadCart();
+    }, [token, fetchCart]);
 
-    // Remove product from cart
-    const handleRemove = async (productId) => {
-        try {
-            const res = await axios.delete(
-                `http://localhost:5000/api/cart/${productId}`,
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-            setCart(res.data);
-        } catch (err) {
-            console.error("Error removing item:", err);
-        }
-    };
+    if (loading) {
+        return <div className="container">Loading cart...</div>;
+    }
 
-    // Update quantity
-    const handleQuantityChange = async (productId, quantity) => {
-        if (quantity < 1) return;
-        try {
-            const res = await axios.put(
-                `http://localhost:5000/api/cart/${productId}`,
-                { quantity },
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-            setCart(res.data);
-        } catch (err) {
-            console.error("Error updating quantity:", err);
-        }
-    };
+    if (!cart || cart.length === 0) {
+        return (
+            <div className="container">
+                <div className="cart-page">
+                    <h1 className="cart_h1">Your Cart</h1>
 
-    if (loading) return <p>Loading cart...</p>;
-    if (!cart || cart.length === 0) return <p>Your cart is empty.</p>;
+                    <div className="empty">
+                        <RiShoppingBag3Line className="shop_icon" />
+                        <h3>Your cart is empty</h3>
+                        <p>Start building your perfect cake or browse our ready-made options</p>
+                        <div className="btns">
+                            <Link to={'/constructor'} className="build">Build Custom Cake</Link>
+                            <Link to={'/cakes'} className="browse">Browse Ready Made</Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
-    const totalPrice = cart.reduce(
-        (total, item) => total + item.product.price * item.quantity,
+    // ✅ calculate overall total
+    const total = cart.reduce(
+        (sum, item) => sum + item.product.price * item.quantity,
         0
     );
 
     return (
-        <div className="cart-container">
-            <h2>Your Cart</h2>
-            {cart.map((item) => (
-                <div className="cart-item" key={item.product._id}>
-                    <img
-                        src={`http://localhost:5000${item.product.image}`}
-                        alt={item.product.name}
-                        className="cart-item-img"
-                    />
-                    <div className="cart-item-info">
-                        <h3>{item.product.name}</h3>
-                        <p>{item.product.price} ₽</p>
-                        <input
-                            type="number"
-                            value={item.quantity}
-                            onChange={(e) =>
-                                handleQuantityChange(item.product._id, parseInt(e.target.value))
-                            }
-                            min="1"
-                        />
-                        <button onClick={() => handleRemove(item.product._id)}>
-                            Remove
-                        </button>
-                    </div>
+        <div className="container">
+            <div className="cart-page">
+                <h1 className="cart_h1">Your Cart</h1>
+                {cart.map((item) => (
+                    <CartItem key={item.product._id} item={item} />
+                ))}
+
+                {/* ✅ overall total */}
+                <div className="cart-total">
+                    <h2>Total: {total} ₽</h2>
                 </div>
-            ))}
-            <hr />
-            <h3>Total: {totalPrice} ₽</h3>
-            <button className="checkout-btn">Proceed to Checkout</button>
+            </div>
         </div>
     );
 };
 
 export default Cart;
-

@@ -6,6 +6,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.2);
 }
 
 .mainNav .container {
@@ -115,8 +116,10 @@
 /* Dropdown styles */
 .catalog-dropdown {
     position: absolute;
-    top: 60px; /* Adjust based on your layout */
-    left: 150px; /* Adjust based on button position */
+    top: 60px;
+    /* Adjust based on your layout */
+    left: 150px;
+    /* Adjust based on button position */
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 8px;

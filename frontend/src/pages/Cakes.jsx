@@ -52,9 +52,7 @@ const Cakes = () => {
                 <div className="catalogue_content">
                     {products && products.length > 0 ? (
                         products.map((product) => (
-                            <Link key={product._id} to={`/cakes/${product._id}`}>
-                                <Card product={product} />
-                            </Link>
+                            <Card key={product._id} product={product} />
                         ))
                     ) : (
                         <p>Loading...</p>

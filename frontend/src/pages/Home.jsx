@@ -2,14 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { LuCake, LuChefHat } from "react-icons/lu";
 import { MdAccessTime } from "react-icons/md";
 import { Link } from 'react-router-dom';
-import './Home.css';
+import './Home.scss';
 import BakerCard from '../components/BakerCard';
 import axios from 'axios';
+import { useProductStore } from '../store/Product';
+import Card from '../components/Card';
+
 
 const Home = () => {
   const [bakers, setBakers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { fetchProducts, products } = useProductStore();
 
   useEffect(() => {
     const fetchBakers = async () => {
@@ -27,6 +31,10 @@ const Home = () => {
 
     fetchBakers();
   }, []);
+
+  useEffect(() => {
+    fetchProducts()
+  }, [fetchProducts])
 
   return (
     <>
@@ -71,6 +79,26 @@ const Home = () => {
         </div>
       </section>
 
+      <section className="cakes">
+        <div className="container">
+          <div className="top">
+            <h2>Popular Cakes</h2>
+
+            <Link to={'/cakes'} className='viewAll'>View All Cakes</Link>
+          </div>
+
+          <div className="product_cards">
+            {products && products.length > 0 ? (
+              products.map((product) => (
+                <Card key={product._id} product={product} />
+              ))
+            ) : (
+              <p>Loading...</p>
+            )}
+          </div>
+        </div>
+      </section>
+
       <section className='bakers_home'>
         <div className="container">
           <div className="top">
@@ -90,19 +118,6 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="cakes">
-        <div className="container">
-          <div className="top">
-            <h2>Popular Cakes</h2>
-
-            <Link to={'/catalog'} className='viewAll'>View All Cakes</Link>
-          </div>
-
-          <div className="product_cards">
-              
-          </div>
-        </div>
-      </section>
     </>
   );
 };
