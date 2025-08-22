@@ -48,11 +48,10 @@ const Cart = () => {
     }
 
     // ✅ calculate overall total
-    const total = cart.reduce(
-        (sum, item) => sum + item.product.price * item.quantity,
-        0
-    );
-
+    const total = Array.isArray(cart)
+        ? cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
+        : 0;
+    
     return (
         <div className="container">
             <div className="cart-page">

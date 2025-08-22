@@ -40,20 +40,16 @@ export const getProductById = async (req, res) => {
 
 // Get products by baker
 export const getBakerProducts = async (req, res) => {
+    const { bakerId } = req.params;
     try {
-        const bakerId = req.params.bakerId;
-
-        if (!mongoose.Types.ObjectId.isValid(bakerId)) {
-            return res.status(400).json({ success: false, message: "Invalid baker ID" });
-        }
-
-        const products = await Product.find({ createdBy: bakerId })
-            .populate('category', 'name')
-            .populate('createdBy', 'name email bio image');
-        res.status(200).json({ success: true, data: products });
-    } catch (error) {
-        console.error('Error fetching baker products:', error.message);
-        res.status(500).json({ success: false, message: 'Server error' });
+        const products = await Product.find({ baker: bakerId }).populate({
+            path: 'baker',
+            select: 'name',
+        });
+        res.json(products);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Failed to fetch products for baker' });
     }
 };
 

@@ -45,13 +45,17 @@ router.post("/", auth, async (req, res) => {
 });
 
 
+// routes/cart.js
 router.get("/", auth, async (req, res) => {
     try {
-        const cart = await Cart.findOne({ user: req.user.id })
-            .populate("items.product");
+        const cart = await Cart.findOne({ user: req.user.id }).populate({
+            path: 'items.product',
+            select: 'name price image baker',
+            populate: { path: 'baker', select: 'name' },
+        });
 
-        if (!cart) {
-            return res.json([]); // return empty array if no cart
+        if (!cart || !cart.items) {
+            return res.json([]); // always return an array
         }
 
         res.json(cart.items);

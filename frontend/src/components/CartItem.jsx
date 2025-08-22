@@ -29,8 +29,7 @@ const CartItem = ({ item }) => {
             <div className="cart-item-info">
                 <div className="texts">
                     <h3>{item.product.name}</h3>
-                    <p>{item.product.bakery}</p>
-                    {/* show only unit price */}
+                    <p>{item.product.baker?.name || "Unknown bakery"}</p> {/* FIXED */}
                     <span>{item.product.price} ₽ / each</span>
                 </div>
 
