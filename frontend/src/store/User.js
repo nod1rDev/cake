@@ -12,7 +12,8 @@ export const useUserStore = create(
       loading: false,
       hydrated: false,
 
-      favorites: [], // ⭐ synced with backend
+      favorites: [],
+      bakerFavorites: [],
 
       setHydrated: (value) => set({ hydrated: value }),
 
@@ -192,7 +193,57 @@ export const useUserStore = create(
       },
 
       clearFavorites: () => set({ favorites: [] }),
+
+      fetchBakerFavorites: async () => {
+        const { token } = get(); // get token from store
+        if (!token) return;
+        try {
+          const res = await fetch("http://localhost:5000/api/favorites/bakers", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = await res.json();
+          set({ bakerFavorites: data });
+        } catch (err) {
+          console.error("Error fetching baker favorites:", err);
+        }
+      },
+
+      addBakerFavorite: async (baker) => {
+        const { token } = get(); // get token from store
+        if (!token) return;
+        try {
+          await fetch(`http://localhost:5000/api/favorites/bakers`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ bakerId: baker._id }),
+          });
+          set((state) => ({ bakerFavorites: [...state.bakerFavorites, baker] }));
+        } catch (err) {
+          console.error("Error adding baker favorite:", err);
+        }
+      },
+
+      removeBakerFavorite: async (bakerId) => {
+        const { token } = get(); // get token from store
+        if (!token) return;
+        try {
+          await fetch(`http://localhost:5000/api/favorites/bakers/${bakerId}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          set((state) => ({
+            bakerFavorites: state.bakerFavorites.filter(b => b._id !== bakerId)
+          }));
+        } catch (err) {
+          console.error("Error removing baker favorite:", err);
+        }
+      },
+
     }),
+
     {
       name: 'user-store',
       partialize: (state) => ({

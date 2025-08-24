@@ -21,6 +21,8 @@ import CakeDetails from './pages/CakeDetails'
 import AddProduct from './pages/AddProduct'
 import { Toaster } from "react-hot-toast";
 import Favorite from './pages/Favorite/Favorite.jsx'
+import Help from './pages/Help/Help.jsx'
+import Contact from './pages/Contact/Contact.jsx'
 
 function App() {
   useEffect(() => {
@@ -53,6 +55,8 @@ function App() {
         } />
         <Route path='/cart' element={<Cart />} />
         <Route path='/favorite' element={<Favorite />} />
+        <Route path='/help' element={<Help />} />
+        <Route path='/contact' element={<Contact />} />
 
 
         <Route
