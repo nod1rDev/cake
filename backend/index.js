@@ -25,7 +25,10 @@ const app = express();
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 // Middleware
-app.use(cors({ origin: "*" }));
+app.use(cors({
+    origin: 'http://localhost:5173', // Your React app URL
+    credentials: true
+}));
 app.use(express.json());
 
 // API Routes

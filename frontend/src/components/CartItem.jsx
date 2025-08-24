@@ -9,12 +9,14 @@ const CartItem = ({ item }) => {
 
     const handleDecrease = () => {
         if (item.quantity > 1 && token) {
+            // Use the fast, optimistic + debounced updateQuantity
             updateQuantity(item.product._id, item.quantity - 1, token);
         }
     };
 
     const handleIncrease = () => {
         if (token) {
+            // Use the fast, optimistic + debounced updateQuantity
             updateQuantity(item.product._id, item.quantity + 1, token);
         }
     };

@@ -25,19 +25,18 @@ const Card = ({ product }) => {
 
         try {
             if (isInCart) {
-                const updatedCart = await removeFromCart(product._id, token);
-                if (updatedCart) toast.success(`${product.name} removed from cart ❌`);
-                else toast.error("Failed to remove product.");
+                removeFromCart(product._id, token); // fire & forget
+                toast.success(`${product.name} removed from cart ❌`);
             } else {
-                const updatedCart = await addToCart(product._id, token, 1);
-                if (updatedCart) toast.success(`${product.name} added to cart ✅`);
-                else toast.error("Failed to add product.");
+                addToCart(product._id, token, 1); // fire & forget
+                toast.success(`${product.name} added to cart ✅`);
             }
         } catch (err) {
             toast.error("Could not update cart.");
             console.error(err);
         }
     };
+
 
     const handleToggleFavorite = async (e) => {
         e.stopPropagation();
