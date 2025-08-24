@@ -10,6 +10,7 @@ import productRoutes from './routes/Product.js';
 import authRoutes from './routes/auth.js';
 import categoryRoutes from './routes/Category.js';
 import cartRoutes from './routes/Cart.js';
+import favoriteRoutes from './routes/Favorite.js';
 // server.js or app.js
 
 
@@ -32,6 +33,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/cart', cartRoutes);
+app.use("/api/favorites", favoriteRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {

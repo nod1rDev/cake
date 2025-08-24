@@ -1,6 +1,6 @@
 import React from "react";
-import { useCartStore } from "../store/Cart";
-import { useUserStore } from "../store/User";
+import { useCartStore } from "../store/Cart.js";
+import { useUserStore } from "../store/User.js";
 import "./CartItem.scss";
 
 const CartItem = ({ item }) => {
@@ -22,18 +22,17 @@ const CartItem = ({ item }) => {
     return (
         <div className="cart-item">
             <img
-                src={`http://localhost:5000${item.product.image}`}
+                src={item.product.image ? `http://localhost:5000/uploads/${item.product.image}` : '/placeholder.png'}
                 alt={item.product.name}
                 className="cart-item-img"
             />
             <div className="cart-item-info">
                 <div className="texts">
                     <h3>{item.product.name}</h3>
-                    <p>{item.product.baker?.name || "Unknown bakery"}</p> {/* FIXED */}
+                    <p>{item.product.baker?.name || "Unknown bakery"}</p>
                     <span>{item.product.price} ₽ / each</span>
                 </div>
 
-                {/* Quantity Controls */}
                 <div className="quantity-calculator">
                     <button onClick={handleDecrease}>-</button>
                     <span>{item.quantity}</span>

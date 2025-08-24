@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import './App.css'
-import Navbar from './components/Navbar'
+import Navbar from './components/Navbar/Navbar.jsx'
 import Home from './pages/Home'
 import Cakes from './pages/Cakes'
 import Footer from './pages/Footer'
@@ -19,6 +19,8 @@ import OnlyUsers from './components/OnlyUsers'
 import Cart from './pages/Cart'
 import CakeDetails from './pages/CakeDetails'
 import AddProduct from './pages/AddProduct'
+import { Toaster } from "react-hot-toast";
+import Favorite from './pages/Favorite/Favorite.jsx'
 
 function App() {
   useEffect(() => {
@@ -50,6 +52,7 @@ function App() {
           // </OnlyUsers>
         } />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/favorite' element={<Favorite />} />
 
 
         <Route
@@ -88,6 +91,7 @@ function App() {
         <Route path='/cakes/:productId' element={<CakeDetails />} />
       </Routes>
       <Footer />
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   )
 }

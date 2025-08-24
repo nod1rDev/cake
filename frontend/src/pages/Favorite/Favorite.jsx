@@ -1,0 +1,40 @@
+import React, { useEffect } from 'react';
+import { useUserStore } from '../../store/User.js';
+import toast from 'react-hot-toast';
+import FavoriteCard from '../../components/FavoriteCard/FavoriteCard.jsx';
+
+export default function Favorite() {
+    const { favorites, fetchFavorites, hydrated, token } = useUserStore();
+
+    useEffect(() => {
+        if (hydrated && token) {
+            fetchFavorites().catch((err) =>
+                toast.error(err.message || 'Failed to load favorites')
+            );
+        }
+    }, [fetchFavorites, hydrated, token]);
+
+    if (!token) {
+        return (
+            <div className="p-6">
+                <h1 className="text-2xl font-bold mb-4">⭐ My Favorites</h1>
+                <p className="text-red-500">Please log in to view your favorites.</p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="p-6">
+            <h1 className="text-2xl font-bold mb-4">⭐ My Favorites</h1>
+            {favorites?.length === 0 ? (
+                <p className="text-gray-500">You haven’t added any favorites yet.</p>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {favorites.map((product) => (
+                        <FavoriteCard key={product._id} product={product} />
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}

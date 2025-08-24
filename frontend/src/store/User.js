@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -10,6 +11,8 @@ export const useUserStore = create(
       errorMessage: '',
       loading: false,
       hydrated: false,
+
+      favorites: [], // ⭐ synced with backend
 
       setHydrated: (value) => set({ hydrated: value }),
 
@@ -35,13 +38,16 @@ export const useUserStore = create(
           }
 
           set({ user: data.userData, token: data.token, loading: false });
+
+          // ⭐ Fetch favorites right after register
+          await get().fetchFavorites();
+
           return { success: true, token: data.token, userData: data.userData };
         } catch (err) {
           set({ errorMessage: err.message || 'Network error', loading: false });
           return { success: false, message: err.message };
         }
       },
-
 
       loginUser: async (credentials) => {
         set({ loading: true, errorMessage: '' });
@@ -64,6 +70,10 @@ export const useUserStore = create(
           }
 
           set({ user: data.userData, token: data.token, loading: false });
+
+          // ⭐ Fetch favorites right after login
+          await get().fetchFavorites();
+
           return { success: true, token: data.token, userData: data.userData };
         } catch (err) {
           set({ errorMessage: err.message || 'Network error', loading: false });
@@ -73,7 +83,7 @@ export const useUserStore = create(
 
       logoutUser: () => {
         localStorage.clear();
-        set({ user: null, token: null });
+        set({ user: null, token: null, favorites: [] }); // clear favorites too
       },
 
       fetchProfile: async () => {
@@ -102,10 +112,94 @@ export const useUserStore = create(
       },
 
       setUserData: ({ user, token }) => set({ user, token }),
+
+      fetchFavorites: async () => {
+        try {
+          const { token } = get();
+          if (!token) return;
+
+          const res = await axios.get("http://localhost:5000/api/favorites", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          set({ favorites: res.data });
+        } catch (err) {
+          console.error("❌ Failed to fetch favorites:", err);
+        }
+      },
+
+      addFavorite: async (product) => {
+        if (!product || !product._id) {
+          console.error("❌ Invalid product passed to addFavorite:", product);
+          return;
+        }
+
+        const { favorites, token } = get();
+        try {
+          const res = await fetch('/api/favorites', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ productId: product._id }),
+          });
+
+          if (!res.ok) throw new Error('Failed to add favorite');
+
+          // Optimistic update
+          if (!favorites.find((p) => p._id === product._id)) {
+            set({ favorites: [...favorites, product] });
+          }
+        } catch (err) {
+          console.error('Add favorite error:', err.message);
+        }
+      },
+
+      removeFavorite: async (productId) => {
+        const { favorites, token } = get();
+        try {
+          const res = await fetch(`/api/favorites/${productId}`, {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (!res.ok) throw new Error('Failed to remove favorite');
+
+          set({ favorites: favorites.filter((p) => p._id !== productId) });
+        } catch (err) {
+          console.error('Remove favorite error:', err.message);
+        }
+      },
+
+      fetchCart: async () => {
+        try {
+          const { token } = get();
+          if (!token) return;
+
+          const res = await axios.get("http://localhost:5000/api/cart", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          // ✅ Ensure we always return an array
+          set({ cart: res.data.items || [] });
+        } catch (err) {
+          console.error("❌ Error fetching cart:", err);
+          set({ cart: [] }); // fallback so map() never breaks
+        }
+      },
+
+      clearFavorites: () => set({ favorites: [] }),
     }),
     {
       name: 'user-store',
-      partialize: (state) => ({ user: state.user, token: state.token }),
+      partialize: (state) => ({
+        user: state.user,
+        token: state.token,
+        favorites: state.favorites, // ✅ fixed: store full objects instead of just IDs
+      }),
       onRehydrateStorage: () => (state) => {
         if (state) state.setHydrated(true);
       },

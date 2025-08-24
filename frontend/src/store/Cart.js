@@ -1,10 +1,11 @@
+// store/Cart.js
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import axios from "axios";
 
 export const useCartStore = create(
   persist(
-    (set, get) => ({
+    (set) => ({
       cart: [],
 
       setCart: (items) => set({ cart: items }),
@@ -15,54 +16,54 @@ export const useCartStore = create(
             headers: { Authorization: `Bearer ${token}` },
           });
           set({ cart: res.data });
+          return res.data;
         } catch (err) {
           console.error("Error fetching cart:", err);
+          return null;
         }
       },
 
-      addToCart: async (productId, token) => {
+      addToCart: async (productId, token, quantity = 1) => {
         try {
           const res = await axios.post(
             "http://localhost:5000/api/cart",
-            { productId },
+            { productId, quantity },
             { headers: { Authorization: `Bearer ${token}` } }
           );
           set({ cart: res.data });
+          return res.data;
         } catch (err) {
           console.error("Error adding to cart:", err);
-        }
-      },
-      
-      updateQuantity: async (productId, quantity, token) => {
-        // ✅ optimistic update
-        set((state) => ({
-          cart: state.cart.map((item) =>
-            item.product._id === productId ? { ...item, quantity } : item
-          )
-        }));
-
-        try {
-          await axios.put(
-            `http://localhost:5000/api/cart/${productId}`,
-            { quantity },
-            { headers: { Authorization: `Bearer ${token}` } }
-          );
-        } catch (err) {
-          console.error("Error updating quantity:", err);
-          // ❌ rollback on error (optional)
+          return null;
         }
       },
 
       removeFromCart: async (productId, token) => {
         try {
-          await axios.delete(`http://localhost:5000/api/cart/${productId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          set((state) => ({
-            cart: state.cart.filter((item) => item.product._id !== productId),
-          }));
+          const res = await axios.delete(
+            `http://localhost:5000/api/cart/${productId}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          set({ cart: res.data });
+          return res.data;
         } catch (err) {
           console.error("Error removing item:", err);
+          return null;
+        }
+      },
+
+      updateQuantity: async (productId, quantity, token) => {
+        try {
+          const res = await axios.put(
+            `http://localhost:5000/api/cart/${productId}`,
+            { quantity },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          set({ cart: res.data });
+          return res.data;
+        } catch (err) {
+          console.error("Error updating quantity:", err);
+          return null;
         }
       },
     }),

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './Navbar.css';
 import { Link, NavLink } from 'react-router-dom';
-import { FaRegUser } from "react-icons/fa";
+import { FaRegUser, FaRegHeart } from "react-icons/fa";
 import { FaBars } from "react-icons/fa6";
 import { IoCartOutline } from "react-icons/io5";
-import { useUserStore } from '../store/User';
+import { useUserStore } from '../../store/User';
 import logo from '/Zarinka_logo.svg';
 import Row from 'react-bootstrap/Row';
-import CategoryMenu from './CategoryMenu';
+import CategoryMenu from '../CategoryMenu';
 
 const Navbar = () => {
     const { user, token, setUserData } = useUserStore();
@@ -75,6 +75,7 @@ const Navbar = () => {
 
                         <div className='icons'>
                             <Link className='cart-icon' to='/cart'><IoCartOutline /></Link>
+                            <Link className='favorite' to={'/favorite'}><FaRegHeart /></Link>
                             <Link className="profile-button" to={token && user ? '/profile' : '/register'}>
                                 <FaRegUser />
                                 {token && user ? 'Профиль' : 'Войти'}

@@ -1,4 +1,3 @@
-// src/pages/Cart.jsx
 import React, { useEffect, useState } from "react";
 import { useCartStore } from "../store/Cart";
 import { useUserStore } from "../store/User";
@@ -12,13 +11,12 @@ const Cart = () => {
     const { token } = useUserStore();
     const [loading, setLoading] = useState(true);
 
-    // Fetch cart when page loads
     useEffect(() => {
         const loadCart = async () => {
             if (token) {
                 await fetchCart(token);
             }
-            setLoading(false); // ✅ always stop loading
+            setLoading(false);
         };
         loadCart();
     }, [token, fetchCart]);
@@ -47,11 +45,8 @@ const Cart = () => {
         );
     }
 
-    // ✅ calculate overall total
-    const total = Array.isArray(cart)
-        ? cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
-        : 0;
-    
+    const total = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
     return (
         <div className="container">
             <div className="cart-page">
@@ -59,8 +54,6 @@ const Cart = () => {
                 {cart.map((item) => (
                     <CartItem key={item.product._id} item={item} />
                 ))}
-
-                {/* ✅ overall total */}
                 <div className="cart-total">
                     <h2>Total: {total} ₽</h2>
                 </div>

@@ -134,7 +134,7 @@ const AdminProfile = () => {
                             {productSuccess && <p className="success-message">{productSuccess}</p>}
                             <Link to={'/addproduct'}><button className="add-pet">Добавить продукт</button></Link>
                             <div className="pets-container">
-                                {products.length > 0 ? (
+                                {products?.length > 0 ? (
                                     products.map((product) => (
                                         <ProductCard 
                                             key={product?._id} 
