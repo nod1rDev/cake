@@ -22,7 +22,8 @@ const AddProduct = () => {
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get("/api/categories");
-        setCategories(data);
+        console.log("Categories response:", data);
+        setCategories(data.data || []); // ✅ use the array inside data
       } catch (err) {
         console.error(err);
       }
@@ -87,7 +88,11 @@ const AddProduct = () => {
       const { data } = await axios.post("/api/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      setForm((prev) => ({ ...prev, image: data.url }));
+      console.log("Upload response:", data);
+      setForm((prev) => ({
+        ...prev,
+        image: data.url || data.imageUrl || data.path,
+      }));
     } catch (err) {
       console.error(err);
       alert("❌ Error uploading image");
@@ -98,13 +103,20 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.price <= 0) {
+    if (Number(form.price) <= 0) {
       return alert("❌ Price must be greater than 0");
     }
 
     setLoading(true);
     try {
-      await axios.post("/api/products", form);
+      await axios.post("/api/products", {
+        ...form,
+        price: Number(form.price),
+        sizes: form.sizes.map((s) => ({
+          ...s,
+          price: Number(s.price),
+        })),
+      });
       alert("✅ Product added!");
       setForm({
         name: "",
@@ -175,7 +187,7 @@ const AddProduct = () => {
           >
             <option value="">-- Select Category --</option>
             {categories.map((cat) => (
-              <option key={cat._id} value={cat._id}>
+              <option key={cat._id || cat.id} value={cat._id || cat.id}>
                 {cat.name}
               </option>
             ))}
@@ -188,7 +200,10 @@ const AddProduct = () => {
           <div className="ingredients">
             {form.ingredients.map((ing, idx) => (
               <span key={idx} className="ingredient-chip">
-                {ing} <button type="button" onClick={() => removeIngredient(ing)}>❌</button>
+                {ing}{" "}
+                <button type="button" onClick={() => removeIngredient(ing)}>
+                  ❌
+                </button>
               </span>
             ))}
           </div>
@@ -199,7 +214,11 @@ const AddProduct = () => {
               onChange={(e) => setNewIngredient(e.target.value)}
               placeholder="Add ingredient"
             />
-            <button type="button" onClick={addIngredient} className="btn-secondary">
+            <button
+              type="button"
+              onClick={addIngredient}
+              className="btn-secondary"
+            >
               + Add
             </button>
           </div>
@@ -217,7 +236,7 @@ const AddProduct = () => {
                 onChange={(e) =>
                   handleSizeChange(idx, "label", e.target.value)
                 }
-                required
+                required={form.sizes.length > 0}
               />
               <input
                 type="number"
@@ -227,9 +246,11 @@ const AddProduct = () => {
                 onChange={(e) =>
                   handleSizeChange(idx, "price", e.target.value)
                 }
-                required
+                required={form.sizes.length > 0}
               />
-              <button type="button" onClick={() => removeSize(idx)}>❌</button>
+              <button type="button" onClick={() => removeSize(idx)}>
+                ❌
+              </button>
             </div>
           ))}
           <button type="button" className="btn-secondary" onClick={addSize}>

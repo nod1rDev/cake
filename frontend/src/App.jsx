@@ -7,7 +7,6 @@ import Footer from './pages/Footer'
 import Auth from './pages/Auth'
 import Profile from './pages/Profile'
 import EditProduct from './pages/EditProduct'
-import EditProfile from './pages/EditProfile'
 import SingleProduct from './pages/SingleProduct'
 import { useEffect } from 'react'
 import { useUserStore } from './store/User'
@@ -18,7 +17,7 @@ import BakerDetail from './pages/BakerDetail'
 import OnlyUsers from './components/OnlyUsers'
 import Cart from './pages/Cart'
 import CakeDetails from './pages/CakeDetails'
-import AddProduct from './pages/AddProduct'
+import AddProduct from './pages/AddProduct/AddProduct.jsx'
 import { Toaster } from "react-hot-toast";
 import Favorite from './pages/Favorite/Favorite.jsx'
 import Help from './pages/Help/Help.jsx'
@@ -75,14 +74,7 @@ function App() {
             </OnlyAdmins>
           }
         />
-        <Route
-          path="/edit-profile"
-          element={
-            <OnlyAuthorized>
-              <EditProfile />
-            </OnlyAuthorized>
-          }
-        />
+
         <Route path='/register' element={<Auth />} />
         <Route
           path="/profile"
