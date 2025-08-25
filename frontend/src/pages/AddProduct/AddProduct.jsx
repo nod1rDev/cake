@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./AddProduct.scss";
+import toast from "react-hot-toast";
+import { useProductStore } from "../../store/Product.js";
 
 const AddProduct = () => {
+  const { createProduct } = useProductStore();
+
   const [form, setForm] = useState({
     name: "",
     price: "",
     description: "",
     category: "",
-    image: "",
+    image: "", // For preview
+    imageFile: null, // For upload
     ingredients: [],
     sizes: [],
   });
@@ -16,16 +21,15 @@ const AddProduct = () => {
   const [categories, setCategories] = useState([]);
   const [newIngredient, setNewIngredient] = useState("");
   const [loading, setLoading] = useState(false);
-  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get("/api/categories");
-        console.log("Categories response:", data);
-        setCategories(data.data || []); // ✅ use the array inside data
+        setCategories(data.data || []);
       } catch (err) {
         console.error(err);
+        toast.error("Failed to load categories");
       }
     };
     fetchCategories();
@@ -36,7 +40,6 @@ const AddProduct = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Ingredient add/remove
   const addIngredient = () => {
     if (newIngredient.trim() && !form.ingredients.includes(newIngredient)) {
       setForm((prev) => ({
@@ -54,7 +57,6 @@ const AddProduct = () => {
     }));
   };
 
-  // Sizes add/remove
   const addSize = () => {
     setForm((prev) => ({
       ...prev,
@@ -75,61 +77,76 @@ const AddProduct = () => {
     }));
   };
 
-  // Upload image
-  const handleFileUpload = async (e) => {
+  // Handle file selection for image
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append("image", file);
-
-    try {
-      setUploading(true);
-      const { data } = await axios.post("/api/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      console.log("Upload response:", data);
-      setForm((prev) => ({
+    if (file) {
+      // Create a preview URL and store the file
+      setForm(prev => ({
         ...prev,
-        image: data.url || data.imageUrl || data.path,
+        image: URL.createObjectURL(file),
+        imageFile: file
       }));
-    } catch (err) {
-      console.error(err);
-      alert("❌ Error uploading image");
-    } finally {
-      setUploading(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validation
     if (Number(form.price) <= 0) {
-      return alert("❌ Price must be greater than 0");
+      return toast.error('❌ Price must be greater than 0');
+    }
+
+    if (!form.imageFile) {
+      return toast.error('❌ Please select an image');
     }
 
     setLoading(true);
+
     try {
-      await axios.post("/api/products", {
-        ...form,
-        price: Number(form.price),
-        sizes: form.sizes.map((s) => ({
-          ...s,
-          price: Number(s.price),
-        })),
+      const formData = new FormData();
+      formData.append('name', form.name);
+      formData.append('price', form.price);
+      formData.append('description', form.description);
+      formData.append('category', form.category);
+      formData.append('image', form.imageFile); // Append the file
+
+      // Append ingredients
+      form.ingredients.forEach((ing, idx) => {
+        formData.append(`ingredients[${idx}]`, ing);
       });
-      alert("✅ Product added!");
-      setForm({
-        name: "",
-        price: "",
-        description: "",
-        category: "",
-        image: "",
-        ingredients: [],
-        sizes: [],
+
+      // Append sizes
+      form.sizes.forEach((s, idx) => {
+        formData.append(`sizes[${idx}][label]`, s.label);
+        formData.append(`sizes[${idx}][price]`, s.price);
       });
+
+      const token = localStorage.getItem('token');
+      const { success, message } = await createProduct(formData, token);
+
+      if (success) {
+        toast.success('✅ Product added successfully!');
+        // Reset form
+        setForm({
+          name: '',
+          price: '',
+          description: '',
+          category: '',
+          image: '',
+          imageFile: null,
+          ingredients: [],
+          sizes: [],
+        });
+        // Clear file input
+        document.querySelector('input[type="file"]').value = "";
+      } else {
+        toast.error(`❌ ${message}`);
+      }
     } catch (err) {
-      console.error(err);
-      alert("❌ Error adding product");
+      console.error('Submission error:', err);
+      toast.error('❌ Failed to add product');
     } finally {
       setLoading(false);
     }
@@ -200,8 +217,11 @@ const AddProduct = () => {
           <div className="ingredients">
             {form.ingredients.map((ing, idx) => (
               <span key={idx} className="ingredient-chip">
-                {ing}{" "}
-                <button type="button" onClick={() => removeIngredient(ing)}>
+                {ing}
+                <button
+                  type="button"
+                  onClick={() => removeIngredient(ing)}
+                >
                   ❌
                 </button>
               </span>
@@ -233,9 +253,7 @@ const AddProduct = () => {
                 type="text"
                 placeholder="Label (e.g. Small)"
                 value={size.label}
-                onChange={(e) =>
-                  handleSizeChange(idx, "label", e.target.value)
-                }
+                onChange={(e) => handleSizeChange(idx, "label", e.target.value)}
                 required={form.sizes.length > 0}
               />
               <input
@@ -243,17 +261,22 @@ const AddProduct = () => {
                 placeholder="Price"
                 min="1"
                 value={size.price}
-                onChange={(e) =>
-                  handleSizeChange(idx, "price", e.target.value)
-                }
+                onChange={(e) => handleSizeChange(idx, "price", e.target.value)}
                 required={form.sizes.length > 0}
               />
-              <button type="button" onClick={() => removeSize(idx)}>
+              <button
+                type="button"
+                onClick={() => removeSize(idx)}
+              >
                 ❌
               </button>
             </div>
           ))}
-          <button type="button" className="btn-secondary" onClick={addSize}>
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={addSize}
+          >
             + Add Size
           </button>
         </div>
@@ -261,16 +284,26 @@ const AddProduct = () => {
         {/* Image Upload */}
         <div className="form-group">
           <label>Upload Image</label>
-          <input type="file" accept="image/*" onChange={handleFileUpload} />
-          {uploading && <p>Uploading...</p>}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            required
+          />
           {form.image && (
-            <img src={form.image} alt="Preview" className="preview-image" />
+            <div className="image-preview">
+              <img src={form.image} alt="Preview" className="preview-image" />
+            </div>
           )}
         </div>
 
         {/* Submit */}
         <div className="form-actions">
-          <button type="submit" className="btn-primary" disabled={loading}>
+          <button
+            type="submit"
+            className="btn-primary"
+            disabled={loading}
+          >
             {loading ? "Adding..." : "Add Cake"}
           </button>
         </div>

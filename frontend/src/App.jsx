@@ -22,6 +22,9 @@ import { Toaster } from "react-hot-toast";
 import Favorite from './pages/Favorite/Favorite.jsx'
 import Help from './pages/Help/Help.jsx'
 import Contact from './pages/Contact/Contact.jsx'
+import BakerOrders from './pages/Bakers/BakerOrders.jsx'
+import MyOrders from './pages/MyOrders/MyOrders.jsx'
+import Checkout from './pages/Checkout/Checkout.jsx'
 
 function App() {
   useEffect(() => {
@@ -56,6 +59,9 @@ function App() {
         <Route path='/favorite' element={<Favorite />} />
         <Route path='/help' element={<Help />} />
         <Route path='/contact' element={<Contact />} />
+        <Route path='/checkout' element={<Checkout />} />
+        <Route path='/my-orders' element={<MyOrders />} />
+        <Route path='/baker-orders' element={<BakerOrders />} />
 
 
         <Route

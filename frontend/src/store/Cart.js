@@ -23,108 +23,122 @@ export const useCartStore = create(
         }
       },
 
-      addToCart: async (productId, token, quantity = 1) => {
-        // Optimistic update
-        set((state) => {
-          const itemIndex = state.cart.findIndex(
-            (item) => item.product._id === productId
+      addToCart: async (product, token, quantity = 1) => {
+        const { cart } = get();
+
+        // Check if product already exists in cart
+        const existingItemIndex = cart.findIndex(
+          item => item && item.product && item.product._id === product._id
+        );
+
+        let newCart;
+
+        if (existingItemIndex !== -1) {
+          // Update quantity if product exists
+          newCart = cart.map((item, index) =>
+            index === existingItemIndex && item
+              ? { ...item, quantity: item.quantity + quantity }
+              : item
           );
+        } else {
+          // Add new item if product doesn't exist
+          newCart = [...cart, { product, quantity }];
+        }
 
-          if (itemIndex > -1) {
-            return {
-              cart: state.cart.map((item) =>
-                item.product._id === productId
-                  ? { ...item, quantity: item.quantity + quantity }
-                  : item
-              ),
-            };
-          } else {
-            return {
-              cart: [
-                ...state.cart,
-                { product: { _id: productId }, quantity },
-              ],
-            };
-          }
-        });
+        // Optimistic update
+        set({ cart: newCart });
 
-        // Server request in background
         try {
-          const res = await axios.post(
+          await axios.post(
             "http://localhost:5000/api/cart",
-            { productId, quantity },
+            { productId: product._id, quantity },
             { headers: { Authorization: `Bearer ${token}` } }
           );
-
-          // Sync quantities only
-          set((state) => ({
-            cart: state.cart.map((item) => {
-              const serverItem = res.data.find(
-                (si) => si.product === item.product._id
-              );
-              return serverItem
-                ? { ...item, quantity: serverItem.quantity }
-                : item;
-            }),
-          }));
         } catch (err) {
-          console.error("Error adding to cart:", err);
+          console.error("❌ Add to cart error:", err);
+          // Revert on error
+          set({ cart });
         }
       },
 
-      updateQuantity: (productId, quantity, token) => {
-        set((state) => ({
-          cart: state.cart.map((item) =>
-            item.product._id === productId ? { ...item, quantity } : item
-          ),
-        }));
+      updateQuantity: (productId, selectedSize, quantity, token) => {
+        const { cart } = get();
+
+        const newCart = cart.map((item) => {
+          if (!item || !item.product) return item;
+
+          const sameProduct = item.product._id === productId;
+          const sameSize =
+            JSON.stringify(item.selectedSize || null) === JSON.stringify(selectedSize || null);
+
+          if (sameProduct && sameSize) {
+            return { ...item, quantity };
+          }
+          return item;
+        });
+
+        set({ cart: newCart });
 
         axios
           .put(
             `http://localhost:5000/api/cart/${productId}`,
-            { quantity },
+            { quantity, selectedSize },
             { headers: { Authorization: `Bearer ${token}` } }
           )
-          .catch((err) => console.error("Error syncing quantity:", err));
+          .catch((err) => {
+            console.error("Error syncing quantity:", err);
+            // Revert on error
+            set({ cart });
+          });
       },
 
+      removeFromCart: (productId, token) => {
+        const { cart } = get();
+        const newCart = cart.filter(item => item && item.product && item.product._id !== productId);
 
-      debouncedSync: debounce(async (productId, quantity, token) => {
+        set({ cart: newCart });
+
+        if (token) {
+          axios.delete(`http://localhost:5000/api/cart/${productId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }).catch(err => {
+            console.error("Error removing from cart:", err);
+            // Revert on error
+            set({ cart });
+          });
+        }
+      },
+
+      // Helper method to check if product is in cart
+      isInCart: (productId) => {
+        const { cart } = get();
+        if (!productId) return false;
+        return cart.some(item => item && item.product && item.product._id === productId);
+      },
+
+      // Helper method to get cart item quantity
+      getCartItemQuantity: (productId) => {
+        const { cart } = get();
+        if (!productId) return 0;
+        const item = cart.find(item => item && item.product && item.product._id === productId);
+        return item ? item.quantity : 0;
+      },
+
+      debouncedSync: debounce(async (item, quantity, token) => {
         try {
           const res = await axios.put(
-            `http://localhost:5000/api/cart/${productId}`,
-            { quantity },
+            `http://localhost:5000/api/cart/${item.product._id}`,
+            { quantity, selectedSize: item.selectedSize },
             { headers: { Authorization: `Bearer ${token}` } }
           );
-
-          set((state) => ({
-            cart: state.cart.map((item) => {
-              const serverItem = res.data.find(
-                (si) => si.product === item.product._id
-              );
-              return serverItem
-                ? { ...item, quantity: serverItem.quantity }
-                : item;
-            }),
-          }));
+          set({ cart: res.data });
         } catch (err) {
           console.error("Error syncing quantity:", err);
         }
       }, 200),
 
-      removeFromCart: async (productId, token) => {
-        try {
-          const res = await axios.delete(
-            `http://localhost:5000/api/cart/${productId}`,
-            { headers: { Authorization: `Bearer ${token}` } }
-          );
-          set({ cart: res.data });
-          return res.data;
-        } catch (err) {
-          console.error("Error removing item:", err);
-          return null;
-        }
-      },
+      // Clear cart (useful for after checkout)
+      clearCart: () => set({ cart: [] }),
     }),
     { name: "cart-storage" }
   )

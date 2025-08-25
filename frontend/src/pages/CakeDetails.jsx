@@ -1,138 +1,127 @@
-import React, { useState, useEffect } from "react"
-import { useParams, Link, useNavigate } from "react-router-dom"
-import { useProductStore } from "../store/Product.js"
-import { FaStar, FaHeart, FaShoppingCart } from "react-icons/fa"
-import "./CakeDetails.scss"
-import CakeAccordion from "../components/CakeAccordion.jsx" // <-- Use Accordion component
+import React, { useState, useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useProductStore } from "../store/Product.js";
+import { useCartStore } from "../store/Cart";
+import { useUserStore } from "../store/User";
+import { FaStar, FaHeart, FaShoppingCart } from "react-icons/fa";
+import "./CakeDetails.scss";
+import CakeAccordion from "../components/CakeAccordion.jsx";
 
 const CakeDetails = () => {
-    const { productId } = useParams()
-    const { products, fetchProducts } = useProductStore()
-    const navigate = useNavigate()
+    const { productId } = useParams();
+    const { products, fetchProducts } = useProductStore();
+    const { addToCart } = useCartStore();
+    const { addFavorite } = useUserStore(); // assuming you have this
+    const navigate = useNavigate();
 
-    const [selectedSize, setSelectedSize] = useState(null)
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
+    const [selectedSize, setSelectedSize] = useState(null);
+    const [quantity, setQuantity] = useState(1);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const loadData = async () => {
             try {
-                setLoading(true)
-                if (!products || products.length === 0) {
-                    await fetchProducts()
-                }
-                setLoading(false)
+                setLoading(true);
+                if (!products || products.length === 0) await fetchProducts();
+                setLoading(false);
             } catch (err) {
-                setError("Failed to load product")
-                setLoading(false)
-                console.error("Error loading product:", err)
+                setError("Failed to load product");
+                setLoading(false);
+                console.log(err);
             }
-        }
+        };
+        loadData();
+    }, [fetchProducts, products]);
 
-        loadData()
-    }, [fetchProducts, products])
+    const product = products?.find((p) => p._id === productId);
 
-    const product = products?.find((p) => p._id === productId)
+    if (loading) return <div>Loading product...</div>;
+    if (error) return <div>{error}</div>;
+    if (!product) return <div>Product not found</div>;
 
-    const getRatingValue = () => {
-        if (!product || !product.rating) return 5
-        if (typeof product.rating === 'number') return product.rating
-        if (product.rating && typeof product.rating === 'object' && 'average' in product.rating) return product.rating.average
-        return 5
-    }
+    const handleAddToCart = () => {
+        addToCart({
+            product,
+            quantity,
+            selectedSize,
+        });
+        navigate("/cart");
+    };
 
-    const getReviewCount = () => {
-        if (!product || !product.rating) return 0
-        if (product.rating && typeof product.rating === 'object' && 'count' in product.rating) return product.rating.count
-        return 0
-    }
+    const handleAddFavorite = () => {
+        addFavorite(product);
+    };
 
-    if (loading) return <div className="loading">Loading product details...</div>
-    if (error) return <div className="error">Error: {error}</div>
-    if (!product) return <div className="not-found">Product not found</div>
+    const price = selectedSize ? selectedSize.price : product.price;
 
     return (
         <main className="cake-details">
             <div className="cake-details__container">
-                {/* Left: Images */}
                 <div className="cake-details__images">
-                    <img
-                        src={`http://localhost:5000${product.image}`}
-                        alt={product.name}
-                        className="main-img"
-                        onError={(e) => { e.target.src = '/placeholder-cake.jpg' }}
-                    />
+                    <img src={`http://localhost:5000${product.image}`} alt={product.name} />
                 </div>
 
-                {/* Right: Info */}
                 <div className="cake-details__info">
-                    <h2 className="cake-details__title">{product.name}</h2>
+                    <h2>{product.name}</h2>
+                    <span className="rating">
+                        <FaStar /> {product.rating?.average ?? 5} ({product.rating?.count ?? 0} reviews)
+                    </span>
 
-                    <div className="cake-details__meta">
-                        <span className="rating">
-                            <FaStar /> {getRatingValue()}
-                            {getReviewCount() > 0 && ` (${getReviewCount()} reviews)`}
-                        </span>
-                        <span className="orders">{product.orderCount || 0} orders</span>
-                    </div>
-
-                    <Link to={`/bakers/${product?.createdBy?._id}`} className="cake-details__baker">
-                        by {product?.createdBy?.name || "Unknown Bakery"}
+                    <Link to={`/bakers/${product.createdBy?._id}`}>
+                        by {product.createdBy?.name || "Unknown Bakery"}
                     </Link>
 
-                    {/* Sizes */}
                     <div className="cake-details__sizes">
                         <h4>Select Size:</h4>
                         {product.sizes?.map((size) => (
                             <button
                                 key={size.label}
-                                className={`size-btn ${selectedSize?.label === size.label ? "active" : ""}`}
+                                className={selectedSize?.label === size.label ? "active" : ""}
                                 onClick={() => setSelectedSize(size)}
                             >
-                                {size.label}
+                                {size.label} (${size.price})
                             </button>
                         ))}
                     </div>
 
-                    {/* Accordion integration */}
-                    {product?.description && (
-                        <CakeAccordion title="Full Description">
+                    <div className="cake-details__quantity">
+                        <label>Quantity:</label>
+                        <input
+                            type="number"
+                            min="1"
+                            value={quantity}
+                            onChange={(e) => setQuantity(Number(e.target.value))}
+                        />
+                    </div>
+
+                    <div className="cake-details__price">Price: ${price}</div>
+
+                    <div className="cake-details__actions">
+                        <button className="btn-primary" onClick={handleAddToCart}>
+                            <FaShoppingCart /> Add to Cart
+                        </button>
+                        <button className="btn-favorite" onClick={handleAddFavorite}>
+                            <FaHeart /> Add to Favorites
+                        </button>
+                    </div>
+
+                    {product.description && (
+                        <CakeAccordion title="Description">
                             <p>{product.description}</p>
                         </CakeAccordion>
                     )}
-
-                    {product?.ingredients && (
+                    {product.ingredients && (
                         <CakeAccordion title="Ingredients">
                             <ul>
-                                {Array.isArray(product.ingredients)
-                                    ? product.ingredients.map((ingredient, idx) => <li key={idx}>{ingredient}</li>)
-                                    : <li>{product.ingredients}</li>
-                                }
+                                {product.ingredients.map((ing, idx) => <li key={idx}>{ing}</li>)}
                             </ul>
                         </CakeAccordion>
                     )}
-
-                    {/* Price */}
-                    <div className="cake-details__price">
-                        ${selectedSize ? selectedSize.price : product.price}
-                    </div>
-
-                    {/* Actions */}
-                    <div className="cake-details__actions">
-                        <button className="btn-primary" onClick={() => navigate("/order")}>
-                            Buy Now
-                        </button>
-                        <button className="btn-cart">
-                            <FaShoppingCart />
-                        </button>
-                        <button className="btn-favorite">
-                            <FaHeart />
-                        </button>
-                    </div>
                 </div>
             </div>
         </main>
-    )
-}
+    );
+};
 
-export default CakeDetails
+export default CakeDetails;

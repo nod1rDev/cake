@@ -11,6 +11,8 @@ import authRoutes from './routes/auth.js';
 import categoryRoutes from './routes/Category.js';
 import cartRoutes from './routes/Cart.js';
 import favoriteRoutes from './routes/Favorite.js';
+import orderRoutes from "./routes/Order.js";
+import uploadRoute from "./routes/upload.js";
 // server.js or app.js
 
 
@@ -37,6 +39,8 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/cart', cartRoutes);
 app.use("/api/favorites", favoriteRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/upload", uploadRoute);
 
 // Error handler
 app.use((err, req, res, next) => {

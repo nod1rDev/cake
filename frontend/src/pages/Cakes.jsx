@@ -14,9 +14,10 @@ const Cakes = () => {
     }, [fetchProducts, fetchCategories])
 
     const handleCategoryClick = (category) => {
-        setSelectedCategory(category)
-        fetchProductsByCategory(category._id)
-    }
+        if (!category?._id) return; // safeguard against null
+        setSelectedCategory(category);
+        fetchProductsByCategory(category._id);
+    };
 
     const handleAllProducts = () => {
         setSelectedCategory(null)
@@ -37,7 +38,7 @@ const Cakes = () => {
                                 key={category._id}
                                 to={"#"}
                                 onClick={() => handleCategoryClick(category)}
-                                className={selectedCategory?._id === category._id ? 'active' : ''}
+                                className={selectedCategory?._id === category?._id ? 'active' : ''}
                             >
                                 {category.name}
                             </Link>

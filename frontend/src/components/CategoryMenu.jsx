@@ -11,10 +11,11 @@ const CategoryMenu = () => {
   const { categories, fetchCategories } = useProductStore();
 
   useEffect(() => {
-    if (categories.length === 0) {
+    // Check if categories is empty or not an array
+    if (!categories || categories.length === 0 || !Array.isArray(categories)) {
       fetchCategories();
     }
-  }, [categories, fetchCategories]);
+  }, [fetchCategories]); // Only depend on fetchCategories
 
   // Optional: assign bakery icons by category name
   const categoryIcons = {
@@ -33,26 +34,29 @@ const CategoryMenu = () => {
 
       <div className={`category-menu-wrapper ${isOpen ? 'open' : ''}`}>
         <div className="category-sidebar">
-          {categories.map((cat, index) => (
-            <div
-              key={cat._id}
-              className={`category-item ${activeCategory === index ? 'active' : ''}`}
-              onClick={() => setActiveCategory(index)} // 🔥 Now click, not hover!
-            >
-              <span className="category-icon">
-                {categoryIcons[cat.name] || <GiCakeSlice />}
-              </span>
-              {cat.name}
-            </div>
-          ))}
+          {Array.isArray(categories) && categories.length > 0 ? (
+            categories.map((cat, index) => (
+              <div
+                key={cat._id || index}
+                className={`category-item ${activeCategory === index ? 'active' : ''}`}
+                onClick={() => setActiveCategory(index)}
+              >
+                <span className="category-icon">
+                  {categoryIcons[cat.name] || <GiCakeSlice />}
+                </span>
+                {cat.name}
+              </div>
+            ))
+          ) : (
+            <div className="loading-categories">Loading categories...</div>
+          )}
         </div>
 
         <div className="category-submenu">
-          {activeCategory !== null && (
+          {activeCategory !== null && categories[activeCategory] && (
             <div className="subcategory-group">
-              <h4>{categories[activeCategory]?.name}</h4>
+              <h4>{categories[activeCategory].name}</h4>
               <p>Здесь можно отобразить подкатегории или товары...</p>
-              {/* You can render subcategories or fetch category products */}
             </div>
           )}
         </div>

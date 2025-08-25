@@ -32,7 +32,8 @@
     "multer": "^2.0.0",
     "react-bootstrap": "^2.10.10",
     "sass": "^1.90.0",
-    "shadcn": "^2.10.0"
+    "shadcn": "^2.10.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
