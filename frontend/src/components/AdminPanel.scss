@@ -1,0 +1,116 @@
+.admin-panel {
+  font-family: sans-serif;
+  background: #fff;
+  color: #8b1538;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 2rem auto;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .message {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+
+    th {
+      background: #8b1538;
+      color: #fff;
+    }
+
+    .status {
+      font-weight: bold;
+      &.pending {
+        color: orange;
+      }
+      &.accepted {
+        color: green;
+      }
+      &.rejected {
+        color: red;
+      }
+    }
+
+    button {
+      margin: 0 0.2rem;
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: 0.4rem;
+      cursor: pointer;
+      font-weight: bold;
+
+      &:nth-child(1) {
+        background: green;
+        color: white;
+      }
+      &:nth-child(2) {
+        background: orange;
+        color: white;
+      }
+      &:nth-child(3) {
+        background: red;
+        color: white;
+      }
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+}
+
+.status-select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  min-width: 120px;
+
+  &.pending {
+    background-color: #fff3e0;
+    color: #f57c00;
+  }
+
+  &.accepted {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+
+  &.rejected {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+
+  &:hover {
+    border-color: #8b1538;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #8b1538;
+    box-shadow: 0 0 0 2px rgba(139, 21, 56, 0.1);
+  }
+
+  option {
+    padding: 8px;
+    background-color: white;
+    color: #333;
+  }
+}

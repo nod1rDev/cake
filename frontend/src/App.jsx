@@ -25,6 +25,7 @@ import Contact from './pages/Contact/Contact.jsx'
 import BakerOrders from './pages/Bakers/BakerOrders.jsx'
 import MyOrders from './pages/MyOrders/MyOrders.jsx'
 import Checkout from './pages/Checkout/Checkout.jsx'
+import CakeConstructor from './pages/Contructor/Constructor.jsx'
 
 function App() {
   useEffect(() => {
@@ -62,7 +63,8 @@ function App() {
         <Route path='/checkout' element={<Checkout />} />
         <Route path='/my-orders' element={<MyOrders />} />
         <Route path='/baker-orders' element={<BakerOrders />} />
-
+        <Route path='/constructor' element={<CakeConstructor />} />
+         
 
         <Route
           path="/addproduct"
